@@ -9,6 +9,12 @@ if (!isset($_SESSION["nombre"])) {
   require 'header.php';
   if ($_SESSION['ventas'] == 1) {
 ?>
+
+    <STYLE type="text/css">
+      input {
+        text-transform: uppercase;
+      }
+    </STYLE>
     <!--Contenido-->
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -122,10 +128,11 @@ if (!isset($_SESSION["nombre"])) {
               <div class="panel-body" style="height: 400px;" id="formularioregistrosAmortizaciones">
                 <form name="formularioAmortizaciones" id="formularioAmortizaciones" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <input type="hidden" name="idamortizacionPago" id="idamortizacionPago">
                     <input type="hidden" name="idamortizacionDetalle" id="idamortizacionDetalle">
                     <input type="hidden" name="montopendienteamortizacionDetalle" id="montopendienteamortizacionDetalle">
                     <label>Nombre de Cliente:</label>
-                    <input type="text" id="nombreDetalle" name="nombreDetalle" class="form-control">
+                    <input type="text" id="nombreDetalle" name="nombreDetalle" class="form-control" readonly>
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">

@@ -40,7 +40,7 @@ class PagoAmortizacion
 
     public function obtenerPendientePagoAmortizacion($idamortizacionDetalle)
     {
-        $sql = "SELECT (SELECT total FROM amortizacion WHERE idamortizacion = '$idamortizacionDetalle') - sum(total_pago) as total_pago FROM pago_amortiz WHERE idamortizacion ='$idamortizacionDetalle'";
+        $sql = "SELECT (SELECT total FROM amortizacion WHERE idamortizacion = '$idamortizacionDetalle') - IFNULL(sum(total_pago),0) as total_pago FROM pago_amortiz WHERE idamortizacion ='$idamortizacionDetalle'";
         return ejecutarConsultaSimpleFila($sql);
         //$sql = "LLLL";
         //return $sql;

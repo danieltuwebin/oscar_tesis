@@ -13,7 +13,7 @@ class Amortizacion
     {
         $sql = "SELECT a.idamortizacion
         , a.idcliente
-        , p.nombre
+        , UPPER(p.nombre) as nombre
         , a.tipo_doc
         , t.nombre as nombre_doc
         , a.num_doc
@@ -44,8 +44,8 @@ class Amortizacion
                                         , fechagrabacion) 
                                         VALUES (
                                         null
-                                        ,'$tipo_doc'
                                         ,'$idcliente'
+                                        ,'$tipo_doc'
                                         ,'$num_doc'
                                         ,'$fecha_emi'
                                         ,'$fecha_ven'
@@ -77,4 +77,11 @@ class Amortizacion
         return ejecutarConsultaSimpleFila($sql);
         //return $sql;
     }
+
+	public function actualizarEstado($idamortizacion)
+	{
+		$sql = "UPDATE amortizacion set condicion='2' WHERE idamortizacion='$idamortizacion'";
+		return ejecutarConsulta($sql);
+		//return $sql;
+	}
 }

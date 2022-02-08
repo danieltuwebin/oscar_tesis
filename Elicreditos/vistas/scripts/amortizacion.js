@@ -117,7 +117,7 @@ function guardaryeditar(e) {
 }
 
 function mostrar(idamortizacion) {
-    alert(idamortizacion);
+    //alert(idamortizacion);
     $.post("../ajax/amortizacion.php?op=mostrar", { idamortizacion: idamortizacion }, function (data, status) {
         data = JSON.parse(data);
         mostrarform(true);
@@ -139,9 +139,11 @@ function mostrar(idamortizacion) {
 
 // PARA AGREGAR PAGO AMORTIZACION
 
-function amortizar(idamortizacion) {
+function amortizar(idamortizacion, nombreCliente) {
     mostrarform_PagoAmortizacion(true)
     $("#idamortizacionDetalle").val(idamortizacion);
+    $("#nombreDetalle").val(nombreCliente);
+    $("#idamortizacion").val(idamortizacion);
     obtenerPendientePagoAmortizacion(idamortizacion);
 }
 
@@ -182,23 +184,47 @@ function cancelarform_PagoAmortizacion() {
 function guardaryeditar_Amortizacion(e) {
     e.preventDefault(); //No se activará la acción predeterminada del evento
 
-    if ($("#montopagoDetalle").val() <= $("#montopendienteamortizacionDetalle").val()) {
+    if ( parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#montopendienteamortizacionDetalle").val())) {
 
         $("#btnGuardarPagoAmortizacion").prop("disabled", true);
         var formData = new FormData($("#formularioAmortizaciones")[0]);
 
         $.ajax({
-            url: "../ajax/amortizacion.php?op=guardaryeditar",
+            url: "../ajax/pagoAmortizacion.php?op=guardaryeditar",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             success: function (datos) {
                 bootbox.alert(datos);
-                mostrarform(false);
-                tabla.ajax.reload();
+                //mostrarform(false);
+                //tabla.ajax.reload();
             }
         });
+
+        var formData2 = new FormData($("#formulario")[0]);
+        if ( parseFloat($("#montopagoDetalle").val()) == parseFloat($("#montopendienteamortizacionDetalle").val())) {
+            console.log('aqui igualdad');
+            $.ajax({
+                url: "../ajax/amortizacion.php?op=actualizarEstado",
+                type: "POST",
+                //data: {idamortizacion : idamortizacion},
+                data: formData2,
+                contentType: false,
+                processData: false,
+                success: function (datos) {
+                    console.log(datos);
+                    /*
+                    bootbox.alert(datos);
+                    mostrarform(false);
+                    tabla.ajax.reload();
+                    */
+                }
+            });
+
+        }
+        mostrarform_PagoAmortizacion(false);
+        tabla.ajax.reload();
         limpiar_PagoAmortizacion();
     } else {
         alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");
@@ -207,7 +233,7 @@ function guardaryeditar_Amortizacion(e) {
 
 function obtenerPendientePagoAmortizacion(idamortizacionDetalle) {
 
-    alert(idamortizacionDetalle);
+    //alert(idamortizacionDetalle);
     $.ajax({
         url: "../ajax/pagoAmortizacion.php?op=obtenerPendientePagoAmortizacion",
         type: "POST",
