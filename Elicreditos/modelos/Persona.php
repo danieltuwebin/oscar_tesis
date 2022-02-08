@@ -1,6 +1,6 @@
 <?php 
 //Incluímos inicialmente la conexión a la base de datos
-require "../config/Conexion.php";
+require "../config/conexion.php";
  
 Class Persona
 {
@@ -47,6 +47,10 @@ Class Persona
         $sql="SELECT p.idpersona,p.nombre,p.tipo_persona,p.iddocumento,d.documento,p.numerodoc,p.telefono,p.email FROM persona p INNER JOIN documentopersona d ON p.iddocumento=d.iddocumento";
         return ejecutarConsulta($sql);
     }
+
+    public function listar_Persona()
+    {
+        $sql="SELECT idpersona, tipo_persona, UPPER(nombre) as nombre, tipo_documento, num_documento, contacto, direccion, telefono, email FROM persona WHERE estado = 1";
+        return ejecutarConsulta($sql);
+    }
 }
- 
-?>
