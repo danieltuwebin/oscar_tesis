@@ -464,3 +464,7 @@ ALTER TABLE amortizacion ADD fechagrabacion DATETIME NOT NULL AFTER condicion;
 ALTER TABLE pago_amortiz ADD fechagrabacion DATETIME NOT NULL AFTER total_pago;
 
 ALTER TABLE pago_amortiz CHANGE num_recivo num_recivo VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL, CHANGE nump_op nump_op VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL, CHANGE descrip descrip VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL;
+
+
+ALTER TABLE `letras` ADD `fechagrabacion` INT NOT NULL AFTER `condicion`;
+ALTER TABLE `letras` CHANGE `fechagrabacion` `fechagrabacion` DATETIME NOT NULL;
