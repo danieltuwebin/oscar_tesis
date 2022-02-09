@@ -6,5 +6,7 @@ PY para la tesis de Oscar Ramos
 -- Ruta 
 http://186.64.116.55/~slvzone/oscar/vistas/login.html
 
+-- test 09022022 desde PC
+
 
 
