@@ -30,9 +30,9 @@ switch ($_GET["op"]) {
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
 				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button class="btn btn-warning btn-xs" onclick="pago(' . $reg->idletra .')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button class="btn btn-success btn-xs" onclick="renovacion(' . $reg->idletra .')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button class="btn btn-primary btn-xs" onclick="protesto(' . $reg->idletra .')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra .',1'.')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra .',2'.')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra .',3'.')"><i class="fa fa-pencil"></i></button>'
 					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
 				//"0" => $reg->idamortizacion,
 				"1" => $reg->idletra,
@@ -61,16 +61,19 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'guardaryeditar':
-		if (empty($idamortizacion)) {
-			$rspta = $amortizacion->insertar(
+		if (empty($idletra)) {
+			$rspta = $letras->insertar(
 				$id_cliente,
-				$documento,
-				$numerodoc,
+				$tipoletra,
+				$numeroletra,
+				$numerofactura,
+				$lugargiro,
 				$fechaemision,
 				$fechavencimiento,
+				$numerounico,
 				$tipoMoneda,
-				$totaldeuda,
-				'1',
+				$totalletra,
+				$condicion,
 				$fechagrabacion
 			);
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del Trabajador";
@@ -84,7 +87,7 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'mostrar':
-		$rspta = $amortizacion->mostrar($idamortizacion);
+		$rspta = $letras->mostrar($idletra);
 		echo json_encode($rspta);
 		//echo $rspta;
 		//echo '1234 '.$idamortizacion;

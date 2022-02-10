@@ -468,3 +468,21 @@ ALTER TABLE pago_amortiz CHANGE num_recivo num_recivo VARCHAR(20) CHARACTER SET 
 
 ALTER TABLE `letras` ADD `fechagrabacion` INT NOT NULL AFTER `condicion`;
 ALTER TABLE `letras` CHANGE `fechagrabacion` `fechagrabacion` DATETIME NOT NULL;
+
+
+DELIMITER $$
+DROP TABLE IF EXISTS detalle_letras$$
+CREATE TABLE detalle_letras(
+	detalleLetra INT AUTO_INCREMENT NOT NULL PRIMARY KEY
+    ,idletra INT
+    ,tipoDetalleLetra INT COMMENT '1 PAGO LETRA - 2 RENOVACION - 3 PROTESTO'
+    ,tipo1_numeroPago VARCHAR(20)
+    ,tipo1_FechaPago DATE
+    ,tipo2_FechaRenovacion DATE
+    ,tipo2_FechaVencimiento DATE
+    ,tipo3_Comision DOUBLE
+    ,total DOUBLE
+)$$
+
+
+ALTER TABLE `detalle_letras` CHANGE `tipo1_FechaPago` `tipo1_FechaPago` DATE NULL DEFAULT '1900-01-01', CHANGE `tipo2_FechaRenovacion` `tipo2_FechaRenovacion` DATE NULL DEFAULT '1900-01-01', CHANGE `tipo2_FechaVencimiento` `tipo2_FechaVencimiento` DATE NULL DEFAULT '1900-01-01';

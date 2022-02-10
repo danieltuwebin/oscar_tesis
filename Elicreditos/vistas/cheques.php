@@ -24,7 +24,7 @@ if (!isset($_SESSION["nombre"])) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Letras Banco&nbsp;
+                <h1 class="box-title">Cheques&nbsp;
                   <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button>
                   <!--<a target="_blank" href="../reportes/rptclientes.php">
                      <button class="btn btn bg-blue"><i class="fa fa-file"></i>Reporte</button>
@@ -39,15 +39,15 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Opciones</th>
                     <th>Id</th>
                     <th>Cliente</th>
-                    <th>Tipo Letra</th>
-                    <th>Numero Letra</th>
-                    <th>Numero Factura</th>
-                    <th>Lugar Giro</th>
+                    <th>Tipo Cheque</th>
+                    <th>Banco</th>
+                    <th>tipo Doc.</th>
+                    <th>Numero Doc.</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
-                    <th>Num. Unico</th>
                     <th>Moneda</th>
-                    <th>Total</th>
+                    <th>Monto</th>
+                    <th>Imagen</th>
                     <th>Estado</th>
                   </thead>
                   <tbody>
@@ -56,15 +56,15 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Opciones</th>
                     <th>Id</th>
                     <th>Cliente</th>
-                    <th>Tipo Letra</th>
-                    <th>Numero Letra</th>
-                    <th>Numero Factura</th>
-                    <th>Lugar Giro</th>
+                    <th>Tipo Cheque</th>
+                    <th>Banco</th>
+                    <th>tipo Doc.</th>
+                    <th>Numero Doc.</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
-                    <th>Num. Unico</th>
                     <th>Moneda</th>
-                    <th>Total</th>
+                    <th>Monto</th>
+                    <th>Imagen</th>
                     <th>Estado</th>
                   </tfoot>
                 </table>
@@ -74,38 +74,42 @@ if (!isset($_SESSION["nombre"])) {
                 <form name="formulario" id="formulario" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
-                    <input type="hidden" name="idletra" id="idletra">
+                    <input type="hidden" name="idcheque" id="idcheque">
                     <label>Nombre de Cliente(*):</label>
                     <select id="id_cliente" name="id_cliente" class="form-control selectpicker" data-live-search="true" maxlength="100">
                     </select>
                   </div>
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Tipo Letra(*):</label>
-                    <select name="tipoletra" id="tipoletra" class="form-control selectpicker">
-                      <option value="">Seleccione Tipo de Letra</option>
-                      <option value="LETRA CARTERA">LETRA CARTERA</option>
-                      <option value="LETRA BANCO">LETRA BANCO</option>
+                    <label for="">Tipo Cheque(*):</label>
+                    <select name="tipocheque" id="tipoletra" class="form-control selectpicker">
+                      <option value="">Seleccione Tipo de Cheque</option>
+                      <option value="TIPO 1">TIPO 1</option>
+                      <option value="TIPO 2">TIPO 2</option>
                     </select>
-                  </div>
-
-                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <label>Número Letra:</label>
-                    <input type="text" class="form-control" name="numeroletra" id="numeroletra" maxlength="20">
-                  </div>
-
-                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <label>Número Factura:</label>
-                    <input type="text" class="form-control" name="numerofactura" id="numerofactura" maxlength="20">
                   </div>
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Lugar Giro(*):</label>
-                    <select name="lugargiro" id="lugargiro" class="form-control selectpicker">
-                      <option value="">Seleccione lugar giro</option>
-                      <option value="LIMA">LIMA</option>
-                      <option value="PROVINCIA">PROVINCIA</option>
+                    <label for="">Banco(*):</label>
+                    <select name="tipocheque" id="tipoletra" class="form-control selectpicker">
+                      <option value="">Seleccione Banco</option>
+                      <option value="BBVA">BBVA</option>
+                      <option value="BCP">BCP</option>
                     </select>
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                    <label for="">Tipo Documento(*):</label>
+                    <select name="tipocheque" id="tipoletra" class="form-control selectpicker">
+                      <option value="">Seleccione Tipo Documento</option>
+                      <option value="DOCUMENTO 1">DOCUMENTO 1</option>
+                      <option value="DOCUMENTO 2">DOCUMENTO 2</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Número Documento:</label>
+                    <input type="text" class="form-control" name="numerodocumento" id="numerodocumento" maxlength="20">
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -118,11 +122,6 @@ if (!isset($_SESSION["nombre"])) {
                     <input class="form-control" type="date" name="fechavencimiento" id="fechavencimiento" maxlength="100">
                   </div>
 
-                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Numero Unico:</label>
-                    <input type="text" class="form-control" name="numerounico" id="numerounico" maxlength="70">
-                  </div>
-
                   <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label for="">Tipo Moneda(*):</label>
                     <select name="tipoMoneda" id="tipoMoneda" class="form-control selectpicker">
@@ -133,8 +132,15 @@ if (!isset($_SESSION["nombre"])) {
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Total Letra:</label>
+                    <label>Monto:</label>
                     <input type="text" class="form-control" name="totalletra" id="totalletra" maxlength="70">
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Imagen:</label>
+                    <input type="file" class="form-control" name="imagen" id="imagen">
+                    <input type="hidden" name="imagenactual" id="imagenactual">
+                    <img src="" width="150px" height="100px" id="imagenmuestra">
                   </div>
 
                   <div id="divcondicion" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">

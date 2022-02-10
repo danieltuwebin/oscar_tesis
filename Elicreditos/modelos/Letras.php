@@ -48,7 +48,8 @@ class Letras
                             , '$num_unico'
                             , '$moneda'
                             , '$total'
-                            , '$condicion'
+                            -- , '$condicion'
+                            , '1'
                             , '$fechagrabacion'
                             )";
         return ejecutarConsulta($sql);
@@ -75,22 +76,24 @@ class Letras
         return ejecutarConsulta($sql);
     }
 
-    public function mostrar($idamortizacion)
+    public function mostrar($idletra)
     {
-        $sql = "SELECT a.idamortizacion
-        , a.idcliente
-        , a.tipo_doc
-        , a.num_doc
-        , a.fecha_emi
-        , a.fecha_ven
-        , a.moneda
-        , a.total
-        , a.condicion
-        , a.fechagrabacion 
-        , sum(p.total_pago) as pagorealizado
-        FROM amortizacion a        
-        LEFT JOIN pago_amortiz p ON a.idamortizacion = p.idamortizacion
-        WHERE a.idamortizacion = '$idamortizacion'";
+        $sql = "SELECT l.idletra
+        , l.idcliente
+        , p.nombre
+        , UPPER(l.tipo_letra) AS tipo_letra
+        , UPPER(l.num_letra) AS num_letra
+        , UPPER(l.num_factura) AS num_factura
+        , UPPER(l.lugar_giro) AS lugar_giro
+        , l.fecha_emi
+        , l.fecha_ven
+        , l.num_unico
+        , UPPER(l.moneda) AS moneda
+        , l.total
+        , l.condicion
+        , l.fechagrabacion 
+        FROM letras l LEFT JOIN persona p ON l.idcliente = p.idpersona
+        WHERE l.idletra = '$idletra'";
         return ejecutarConsultaSimpleFila($sql);
         //return $sql;
     }
