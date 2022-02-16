@@ -1,7 +1,7 @@
 <?php
 //incluir la conexion de base de datos
 require "../config/conexion.php";
-class Letras
+class DetalleLetras
 {
 
     //implementamos nuestro constructor
@@ -10,46 +10,41 @@ class Letras
     }
     //metodo insertar registro
     public function insertar(
-        $idcliente,
-        $tipo_letra,
-        $num_letra,
-        $num_factura,
-        $lugar_giro,
-        $fecha_emi,
-        $fecha_ven,
-        $num_unico,
-        $moneda,
-        $total,
-        $condicion,
+        $idletra,
+        $tipoLetraDetalle,
+        $numeroPago,
+        $fechapago,
+        $fecharenovacion,
+        $fechavencimiento,
+        $comisionprotesto,
+        $fechaprotesto,
+        $montopagoDetalle,
         $fechagrabacion
     ) {
-        $sql = "INSERT INTO letras(idletra
-                            , idcliente
-                            , tipo_letra
-                            , num_letra
-                            , num_factura
-                            , lugar_giro
-                            , fecha_emi
-                            , fecha_ven
-                            , num_unico
-                            , moneda
+        $sql = "INSERT INTO detalle_letras(
+                              idDetalleLetra
+                            , idletra
+                            , tipoDetalleLetra
+                            , tipo1_numeroPago
+                            , tipo1_FechaPago
+                            , tipo2_FechaRenovacion
+                            , tipo2_FechaVencimiento
+                            , tipo3_Comision
+                            , tipo3_FechaProtesto
                             , total
-                            , condicion
-                            , fechagrabacion) 
+                            , fechagrabacion
+                            ) 
                             VALUES (
-                            NULL
-                            , '$idcliente'
-                            , '$tipo_letra'
-                            , '$num_letra'
-                            , '$num_factura'
-                            , '$lugar_giro'
-                            , '$fecha_emi'
-                            , '$fecha_ven'
-                            , '$num_unico'
-                            , '$moneda'
-                            , '$total'
-                            -- , '$condicion'
-                            , '1'
+                                NULL
+                            , '$idletra'
+                            , '$tipoLetraDetalle'
+                            , '$numeroPago'
+                            , '$fechapago'
+                            , '$fecharenovacion'
+                            , '$fechavencimiento'
+                            , '$comisionprotesto'
+                            , '$fechaprotesto'
+                            , '$montopagoDetalle'
                             , '$fechagrabacion'
                             )";
         return ejecutarConsulta($sql);
@@ -98,9 +93,9 @@ class Letras
         //return $sql;
     }
 
-    public function actualizarEstado($idletra, $condicion)
+    public function actualizarEstado($idamortizacion)
     {
-        $sql = "UPDATE letras SET condicion ='$condicion' WHERE idletra ='$idletra'";
+        $sql = "UPDATE amortizacion set condicion='2' WHERE idamortizacion='$idamortizacion'";
         return ejecutarConsulta($sql);
         //return $sql;
     }

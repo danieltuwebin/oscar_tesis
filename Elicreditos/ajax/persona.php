@@ -17,8 +17,8 @@ switch ($_GET["op"]) {
     case 'guardaryeditar':
         if (empty($idpersona)) {
             $rspta = $persona->insertar($tipo_persona, $nombre, $tipo_documento, $num_documento, $contacto, $direccion, $telefono, $email);
-            //echo $rspta ? "Persona registrada" : "Persona no se pudo registrar";
-            echo $rspta
+            echo $rspta ? "Persona registrada" : "Persona no se pudo registrar";
+            //echo $rspta;
         } else {
             $rspta = $persona->editar($idpersona, $tipo_persona, $nombre, $tipo_documento, $num_documento, $contacto, $direccion, $telefono, $email);
             echo $rspta ? "Persona actualizada" : "Persona no se pudo actualizar";

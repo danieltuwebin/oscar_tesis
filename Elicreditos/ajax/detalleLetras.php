@@ -1,23 +1,23 @@
 <?php
 
 session_start();
-require_once "../modelos/Letras.php";
+require_once "../modelos/DetalleLetras.php";
 
-$letras = new Letras();
+$detalleLetras = new DetalleLetras();
 
-$idletra = isset($_POST["idletra"]) ? limpiarCadena($_POST["idletra"]) : "";
-$idpersona = isset($_POST["idpersona"]) ? limpiarCadena($_POST["idpersona"]) : "";
-$id_cliente = isset($_POST["id_cliente"]) ? limpiarCadena($_POST["id_cliente"]) : "";
-$tipoletra = isset($_POST["tipoletra"]) ? limpiarCadena($_POST["tipoletra"]) : "";
-$numeroletra = isset($_POST["numeroletra"]) ? limpiarCadena(strtoupper($_POST["numeroletra"])) : "";
-$numerofactura = isset($_POST["numerofactura"]) ? limpiarCadena(strtoupper($_POST["numerofactura"])) : "";
-$lugargiro = isset($_POST["lugargiro"]) ? limpiarCadena($_POST["lugargiro"]) : "";
-$fechaemision = isset($_POST["fechaemision"]) ? limpiarCadena($_POST["fechaemision"]) : "";
+$idLetraDetalle = isset($_POST["idLetraDetalle"]) ? limpiarCadena($_POST["idLetraDetalle"]) : "";
+//$idLetra = isset($_POST["idLetra"]) ? limpiarCadena($_POST["idLetra"]) : "";
+$idLetra = isset($_POST["id"]) ? limpiarCadena($_POST["id"]) : "";
+$tipoLetraDetalle = isset($_POST["tipoLetraDetalle"]) ? limpiarCadena($_POST["tipoLetraDetalle"]) : "";
+$montoidLetra = isset($_POST["montoidLetra"]) ? limpiarCadena($_POST["montoidLetra"]) : "";
+$nombreDetalle = isset($_POST["nombreDetalle"]) ? limpiarCadena($_POST["nombreDetalle"]) : "";
+$numeroPago = isset($_POST["numeroPago"]) ? limpiarCadena(strtoupper($_POST["numeroPago"])) : "";
+$fechapago = isset($_POST["fechapago"]) ? limpiarCadena($_POST["fechapago"]) : "";
+$fecharenovacion = isset($_POST["fecharenovacion"]) ? limpiarCadena($_POST["fecharenovacion"]) : "";
 $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fechavencimiento"]) : "";
-$numerounico = isset($_POST["numerounico"]) ? limpiarCadena(strtoupper($_POST["numerounico"])) : "";
-$tipoMoneda = isset($_POST["tipoMoneda"]) ? limpiarCadena($_POST["tipoMoneda"]) : "";
-$totalletra = isset($_POST["totalletra"]) ? limpiarCadena($_POST["totalletra"]) : "";
-$condicion = isset($_POST["condicion"]) ? limpiarCadena($_POST["condicion"]) : "";
+$fechaprotesto = isset($_POST["fechaprotesto"]) ? limpiarCadena($_POST["fechaprotesto"]) : "";
+$comisionprotesto = isset($_POST["comisionprotesto"]) ? limpiarCadena(strtoupper($_POST["comisionprotesto"])) : "";
+$montopagoDetalle = isset($_POST["montopagoDetalle"]) ? limpiarCadena($_POST["montopagoDetalle"]) : "";
 $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 
 switch ($_GET["op"]) {
@@ -30,7 +30,7 @@ switch ($_GET["op"]) {
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
 				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra .',1,'.$reg->total.','.$reg->idcliente.')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra .',1'.')"><i class="fa fa-pencil"></i></button>'
 					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra .',2'.')"><i class="fa fa-pencil"></i></button>'
 					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra .',3'.')"><i class="fa fa-pencil"></i></button>'
 					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
@@ -61,27 +61,27 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'guardaryeditar':
-		if (empty($idletra)) {
-			$rspta = $letras->insertar(
-				$id_cliente,
-				$tipoletra,
-				$numeroletra,
-				$numerofactura,
-				$lugargiro,
-				$fechaemision,
+		if (empty($idLetra)) {
+			$rspta = $detalleLetras->insertar(
+				$idLetraDetalle,
+				$tipoLetraDetalle,
+				$numeroPago,
+				$fechapago,
+				$fecharenovacion,
 				$fechavencimiento,
-				$numerounico,
-				$tipoMoneda,
-				$totalletra,
-				$condicion,
+				$comisionprotesto,
+				$fechaprotesto,
+				$montopagoDetalle,
 				$fechagrabacion
 			);
-			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del Trabajador";
+			//echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del Trabajador";
+			echo $rspta ? "1" : "0";
 			//echo $rspta;
 		} else {
 			//$rspta = $amortizacion->editar($id_formacion, $id_trabajador, $nivelEducativo, $gradoEducativo, $nombreProfesion, $numeroColegiatura, $maestria, $doctorado, $institucionEducativa, $fechaExpedicionTitulo);
 			//echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
 			//echo $rspta;
+			echo "11111";
 		}
 
 		break;
@@ -94,8 +94,8 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'actualizarEstado':
-		$rspta = $letras->actualizarEstado($idletra, $condicion);
-		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
+		$rspta = $amortizacion->actualizarEstado($idamortizacion);
+		echo $rspta ? "Datos desactivados correctamente" : "No se pudo desactivar los datos";
 		//echo $rspta;
 		break;
 }

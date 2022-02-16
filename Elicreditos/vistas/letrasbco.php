@@ -70,7 +70,7 @@ if (!isset($_SESSION["nombre"])) {
                 </table>
               </div>
 
-              <div class="panel-body" style="height: 400px;" id="formularioregistros">
+              <div class="panel-body" style="height: 800px;" id="formularioregistros">
                 <form name="formulario" id="formulario" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
@@ -82,9 +82,9 @@ if (!isset($_SESSION["nombre"])) {
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Tipo Letra(*):</label>
-                    <select name="tipoletra" id="tipoletra" class="form-control selectpicker">
-                      <option value="">Seleccione Tipo de Letra</option>
-                      <option value="LETRA CARTERA">LETRA CARTERA</option>
+                    <select name="tipoletra" id="tipoletra" class="form-control" disabled="disabled">
+                      <!--<option value="">Seleccione Tipo de Letra</option>
+                      <option value="LETRA CARTERA">LETRA CARTERA</option>-->
                       <option value="LETRA BANCO">LETRA BANCO</option>
                     </select>
                   </div>
@@ -157,14 +157,16 @@ if (!isset($_SESSION["nombre"])) {
                     <input type="hidden" name="id" id="id">
                     <input type="hidden" name="idLetraDetalle" id="idLetraDetalle">
                     <input type="hidden" name="montoidLetra" id="montoidLetra">
+                    <input type="hidden" name="tipoLetraDetalle" id="tipoLetraDetalle">
                     <label>Nombre de Cliente:</label>
-                    <input type="text" id="nombreDetalle" name="nombreDetalle" class="form-control" readonly>
+                    <select id="nombreDetalle" name="nombreDetalle" class="form-control selectpicker" data-live-search="true" maxlength="100" disabled>
+                    </select>
                   </div>
 
                   <div id="DivPagoLetra">
                     <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
                       <label>Numero Pago(*):</label>
-                      <input type="text" id="numerorPago" name="numerorPago" class="form-control">
+                      <input type="text" id="numeroPago" name="numeroPago" class="form-control">
                     </div>
 
                     <div class="form-group col-lg-3 col-md-6 col-xs-12">

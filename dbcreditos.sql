@@ -486,3 +486,14 @@ CREATE TABLE detalle_letras(
 
 
 ALTER TABLE `detalle_letras` CHANGE `tipo1_FechaPago` `tipo1_FechaPago` DATE NULL DEFAULT '1900-01-01', CHANGE `tipo2_FechaRenovacion` `tipo2_FechaRenovacion` DATE NULL DEFAULT '1900-01-01', CHANGE `tipo2_FechaVencimiento` `tipo2_FechaVencimiento` DATE NULL DEFAULT '1900-01-01';
+
+
+ALTER TABLE `letras` CHANGE `condicion` `condicion` TINYINT(1) NOT NULL COMMENT '1-pendiente:2-renovado:3-protesto:4-pagado';
+
+
+ALTER TABLE `detalle_letras` CHANGE `detalleLetra` `idDetalleLetra` INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `detalle_letras` ADD `tipo3_FechaProtesto` DATE NOT NULL DEFAULT '1900-01-01' AFTER `tipo3_Comision`;
+
+ALTER TABLE `detalle_letras` ADD `fechagrabacion` DATETIME NOT NULL AFTER `total`;
+

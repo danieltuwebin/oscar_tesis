@@ -15,8 +15,8 @@ Class Persona
     {
         $sql="INSERT INTO persona (tipo_persona,nombre,tipo_documento,num_documento,contacto,direccion,telefono,email,estado)
         VALUES ('$tipo_persona','$nombre','$tipo_documento','$num_documento','$contacto','$direccion','$telefono','$email','1')";
-        //return ejecutarConsulta($sql);
-        return $sql;
+        return ejecutarConsulta($sql);
+        //return $sql;
     }
  
     //Implementamos un método para editar registros
