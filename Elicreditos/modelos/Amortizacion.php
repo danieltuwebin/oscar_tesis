@@ -71,6 +71,7 @@ class Amortizacion
         , a.condicion
         , a.fechagrabacion 
         , sum(p.total_pago) as pagorealizado
+        , (a.total - sum(p.total_pago)) as pagopendiente
         FROM amortizacion a        
         LEFT JOIN pago_amortiz p ON a.idamortizacion = p.idamortizacion
         WHERE a.idamortizacion = '$idamortizacion'";

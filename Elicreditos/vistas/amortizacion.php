@@ -65,7 +65,7 @@ if (!isset($_SESSION["nombre"])) {
                   </tfoot>
                 </table>
               </div>
-              <div class="panel-body" style="height: 400px;" id="formularioregistros">
+              <div class="panel-body" style="height: 800px;" id="formularioregistros">
                 <form name="formulario" id="formulario" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
@@ -97,7 +97,7 @@ if (!isset($_SESSION["nombre"])) {
                     <input class="form-control" type="date" name="fechavencimiento" id="fechavencimiento" maxlength="100" placeholder="fechainicio">
                   </div>
 
-                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                  <div class="form-group col-lg-3 col-md-3 col-xs-12">
                     <label for="">Tipo Moneda(*):</label>
                     <select name="tipoMoneda" id="tipoMoneda" class="form-control select-picker">
                       <option value="">Seleccione Tipo de Moneda</option>
@@ -112,8 +112,30 @@ if (!isset($_SESSION["nombre"])) {
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Condición:</label>
+                    <label id="lbltotaldeudaPendiente">Total Deuda Pendiente:</label>
+                    <input type="text" class="form-control" name="totaldeudaPendiente" id="totaldeudaPendiente" maxlength="70" placeholder="0.00">
+                  </div>
+
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label id="lblcondicion">Condición:</label>
                     <input type="text" class="form-control" name="condicion" id="condicion" readonly>
+                  </div>
+
+                  <div id="divListadoPagoAmortizacion" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel-body table-responsive" id="listadoregistrosPagoAmortizacion">
+                      <table id="tbllistadoPagoAmortizacion" class="table table-striped table-bordered table-condensed table-hover">
+                        <thead>
+                          <th>Id</th>
+                          <th>Nro. Recibo</th>
+                          <th>Nro. Operación</th>
+                          <th>Descripción</th>
+                          <th>Fecha pago</th>
+                          <th>Monto</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -123,6 +145,7 @@ if (!isset($_SESSION["nombre"])) {
                   </div>
                 </form>
               </div>
+
 
               <!-- INICIO FRM AMORTIZACIONES -->
               <div class="panel-body" style="height: 400px;" id="formularioregistrosAmortizaciones">
@@ -183,7 +206,7 @@ if (!isset($_SESSION["nombre"])) {
   }
   require 'footer.php';
   ?>
-  <script type="text/javascript" src="scripts/amortizacion.js"></script>
+  <script type="text/javascript" src="scripts/amortizacion.js?v=1"></script>
 
 <?php
 }

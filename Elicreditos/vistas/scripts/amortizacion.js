@@ -1,4 +1,5 @@
 var tabla;
+var tabla2;
 
 //Función que se ejecuta al inicio
 function init() {
@@ -50,13 +51,24 @@ function mostrarform(flag) {
         $("#formularioregistros").show();
         $("#btnGuardar").prop("disabled", false);
         $("#btnagregar").hide();
+
+        $("#lblcondicion").hide();
         $("#condicion").hide();
+        $("#lbltotaldeudaPendiente").hide();
+        $("#totaldeudaPendiente").hide();
+        $("#divListadoPagoAmortizacion").hide();
     }
     else {
         console.log(flag);
         $("#listadoregistros").show();
         $("#formularioregistros").hide();
         $("#btnagregar").show();
+
+        $("#lblcondicion").show();
+        $("#condicion").show();
+        $("#lbltotaldeudaPendiente").show();
+        $("#totaldeudaPendiente").show();
+        $("#divListadoPagoAmortizacion").show();
     }
 }
 
@@ -134,6 +146,14 @@ function mostrar(idamortizacion) {
         $("#condicion").show();
         $("#condicion").val(data.condicion == 1 ? "PENDIENTE" : "PAGADO");
         $("#pagorealizado").val(data.pagorealizado);
+        $("#totaldeudaPendiente").val(data.pagopendiente);
+
+        listar_PagoAmortizacion(idamortizacion);
+        $("#lblcondicion").show();
+        $("#condicion").show();
+        $("#lbltotaldeudaPendiente").show();
+        $("#totaldeudaPendiente").show();
+        $("#divListadoPagoAmortizacion").show();
     })
 }
 
@@ -184,7 +204,7 @@ function cancelarform_PagoAmortizacion() {
 function guardaryeditar_Amortizacion(e) {
     e.preventDefault(); //No se activará la acción predeterminada del evento
 
-    if ( parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#montopendienteamortizacionDetalle").val())) {
+    if (parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#montopendienteamortizacionDetalle").val())) {
 
         $("#btnGuardarPagoAmortizacion").prop("disabled", true);
         var formData = new FormData($("#formularioAmortizaciones")[0]);
@@ -203,7 +223,7 @@ function guardaryeditar_Amortizacion(e) {
         });
 
         var formData2 = new FormData($("#formulario")[0]);
-        if ( parseFloat($("#montopagoDetalle").val()) == parseFloat($("#montopendienteamortizacionDetalle").val())) {
+        if (parseFloat($("#montopagoDetalle").val()) == parseFloat($("#montopendienteamortizacionDetalle").val())) {
             console.log('aqui igualdad');
             $.ajax({
                 url: "../ajax/amortizacion.php?op=actualizarEstado",
@@ -249,6 +269,44 @@ function obtenerPendientePagoAmortizacion(idamortizacionDetalle) {
             $("#montopendienteamortizacionDetalle").val(data.total_pago);
         }
     });
+}
+
+//Función Listar
+function listar_PagoAmortizacion(id) {
+
+    try {
+        //adddlert("Welcome guest!");
+        tabla2 = $('#tbllistadoPagoAmortizacion').dataTable(
+            {
+                "aProcessing": true,//Activamos el procesamiento del datatables
+                "aServerSide": true,//Paginación y filtrado realizados por el servidor
+                "searching": false,
+                "bPaginate": false,
+                "paging": false,
+                "info": false,
+                dom: 'Bfrtip',//Definimos los elementos del control de tabla                
+                buttons: [],
+                "ajax":
+                {
+                    url: '../ajax/pagoAmortizacion.php?op=listar&id=' + id,
+                    type: "get",
+                    dataType: "json",
+                    error: function (e) {
+                        console.log(e.responseText);
+                    }
+                },
+                "bDestroy": true,
+                "iDisplayLength": 5,//Paginación
+                "order": [[0, "asc"]]//Ordenar (columna,orden)
+            }).DataTable();
+        //
+    }
+    catch (err) {
+        console.log(err.message);
+    }
+
+
+
 }
 
 

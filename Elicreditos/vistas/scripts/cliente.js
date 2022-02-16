@@ -9,21 +9,17 @@ function init(){
     {
         guardaryeditar(e);  
     })
-    $.post("../ajax/persona.php?op=selectDocumento", function(r){
-                $("#iddocumento").html(r);
-                $('#iddocumento').selectpicker('refresh');
-
-    });
 }
  
 //Función limpiar
 function limpiar()
 {
     $("#nombre").val("");
-    $("#numerodoc").val("");
+    $("#num_documento").val("");
     $("#direccion").val("");
     $("#telefono").val("");
-     $("#email").val("");
+    $("#contacto").val("");
+    $("#email").val("");
     $("#idpersona").val("");
 }
  
@@ -69,7 +65,8 @@ function listar()
                 ],
         "ajax":
                 {
-                    url: '../ajax/persona.php?op=listar',
+                    //url: '../ajax/persona.php?op=listar',
+                    url: '../ajax/persona.php?op=listarc',
                     type : "get",
                     dataType : "json",                      
                     error: function(e){
@@ -98,9 +95,12 @@ function guardaryeditar(e)
  
         success: function(datos)
         {                    
+            /*
               bootbox.alert(datos);           
               mostrarform(false);
               tabla.ajax.reload();
+            */
+           console.log(datos);
         }
  
     });
@@ -115,9 +115,10 @@ function mostrar(idpersona)
         mostrarform(true);
  
         $("#nombre").val(data.nombre);
-        $("#iddocumento").val(data.iddocumento);
-        $('#iddocumento').selectpicker('refresh');
-        $("#numerodoc").val(data.numerodoc);
+        $("#tipo_documento").val(data.tipo_documento);
+        $("#tipo_documento").selectpicker('refresh');
+        $("#num_documento").val(data.num_documento);
+        $("#contacto").val(data.contacto);
         $("#direccion").val(data.direccion);
         $("#telefono").val(data.telefono);
         $("#email").val(data.email);

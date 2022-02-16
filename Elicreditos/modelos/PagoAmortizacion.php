@@ -7,17 +7,17 @@ class PagoAmortizacion
     //implementamos nuestro constructor
     public function __construct()
     {
-        
-    }    
+    }
 
     //metodo insertar registro
-    public function insertar($idamortizacionDetalle
-                            , $numeroreciboDetalle
-                            , $numerooperacionDetalle
-                            , $descripcionDetalle
-                            , $fechapagoDetalle
-                            , $montopagoDetalle)
-    {
+    public function insertar(
+        $idamortizacionDetalle,
+        $numeroreciboDetalle,
+        $numerooperacionDetalle,
+        $descripcionDetalle,
+        $fechapagoDetalle,
+        $montopagoDetalle
+    ) {
         $sql = "INSERT INTO pago_amortiz(idpago_amort
                             , idamortizacion
                             , num_recivo
@@ -46,4 +46,17 @@ class PagoAmortizacion
         //return $sql;
     }
 
+    public function listar($idamortizacionDetalle)
+    {
+        $sql = "SELECT idpago_amort
+        , idamortizacion
+        , UPPER(num_recivo) AS num_recivo
+        , UPPER(nump_op) AS nump_op
+        , UPPER(descrip) AS descrip
+        , fecha_pago, total_pago
+        , fechagrabacion FROM pago_amortiz 
+        -- WHERE idamortizacion = '3';
+        WHERE idamortizacion = '$idamortizacionDetalle'";
+        return ejecutarConsulta($sql);
+    }
 }
