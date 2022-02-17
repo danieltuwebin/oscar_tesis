@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-require_once "../modelos/Letras.php";
+require_once "../modelos/LetrasCartera.php";
 
-$letras = new Letras();
+$letrasCartera = new LetrasCartera();
 
 $idletra = isset($_POST["idletra"]) ? limpiarCadena($_POST["idletra"]) : "";
 $idpersona = isset($_POST["idpersona"]) ? limpiarCadena($_POST["idpersona"]) : "";
@@ -14,7 +14,6 @@ $numerofactura = isset($_POST["numerofactura"]) ? limpiarCadena(strtoupper($_POS
 $lugargiro = isset($_POST["lugargiro"]) ? limpiarCadena($_POST["lugargiro"]) : "";
 $fechaemision = isset($_POST["fechaemision"]) ? limpiarCadena($_POST["fechaemision"]) : "";
 $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fechavencimiento"]) : "";
-$numerounico = isset($_POST["numerounico"]) ? limpiarCadena(strtoupper($_POST["numerounico"])) : "";
 $tipoMoneda = isset($_POST["tipoMoneda"]) ? limpiarCadena($_POST["tipoMoneda"]) : "";
 $totalletra = isset($_POST["totalletra"]) ? limpiarCadena($_POST["totalletra"]) : "";
 $condicion = isset($_POST["condicion"]) ? limpiarCadena($_POST["condicion"]) : "";
@@ -23,25 +22,16 @@ $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 switch ($_GET["op"]) {
 
 	case 'listar':
-		$rspta = $letras->listar();
+		$rspta = $letrasCartera->listar();
 		//declaramos un array
 		$data = array();
 
 		//https://wiki.php.net/rfc/ternary_associativity
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
-				"0" => $reg->condicion == 1 ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-						. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra . ',1,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-						. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-						. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-					: ($reg->condicion == 2 ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-						. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-						. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-					: ($reg->condicion == 3 ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'						
-					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>')),
-				//"0" => $reg->idamortizacion,
+				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>'
+					. ' ' . '<button class="btn btn-warning btn-xs" onclick="amortizar(' . $reg->idamortizacion .',&apos;'. $reg->nombre .'&apos;)"><i class="fa fa-pencil"></i></button>'
+					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>',
 				"1" => $reg->idletra,
 				"2" => $reg->nombre,
 				"3" => $reg->tipo_letra,
@@ -54,9 +44,7 @@ switch ($_GET["op"]) {
 				"10" => $reg->moneda,
 				"11" => $reg->total,
 				"12" => $reg->condicion == 1 ? '<span class="label bg-red">Pendiente</span>' 
-				: ($reg->condicion == 2 ? '<span class="label bg-yellow">Renovado</span>'
-				: ($reg->condicion == 3 ? '<span class="label bg-blue">Protestado</span>'
-				: '<span class="label bg-green">Pagado</span>'))
+				: '<span class="label bg-green">Pagado</span>'
 			);
 		}
 
@@ -72,7 +60,7 @@ switch ($_GET["op"]) {
 
 	case 'guardaryeditar':
 		if (empty($idletra)) {
-			$rspta = $letras->insertar(
+			$rspta = $letrasCartera->insertar(
 				$id_cliente,
 				$tipoletra,
 				$numeroletra,
@@ -80,7 +68,6 @@ switch ($_GET["op"]) {
 				$lugargiro,
 				$fechaemision,
 				$fechavencimiento,
-				$numerounico,
 				$tipoMoneda,
 				$totalletra,
 				$condicion,
@@ -109,12 +96,6 @@ switch ($_GET["op"]) {
 
 	case 'actualizarEstado':
 		$rspta = $letras->actualizarEstado($idletra, $condicion);
-		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
-		//echo $rspta;
-		break;
-
-	case 'actualizarNumeroUnico':
-		$rspta = $letras->actualizarNumeroUnico($idletra, $numerounico);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		//echo $rspta;
 		break;

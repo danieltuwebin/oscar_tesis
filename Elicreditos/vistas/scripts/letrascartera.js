@@ -1,7 +1,4 @@
 var tabla;
-var tabla2;
-var valorRespuesta = "";
-var idLetraActualizaNU = "";
 
 //Función que se ejecuta al inicio
 function init() {
@@ -35,15 +32,12 @@ function limpiar() {
     $("#totalRenovacion").val("");
     $("#id_cliente").val("");
     $("#id_cliente").selectpicker('refresh');
-    //$("#tipoletra").val("");
-    //$("#tipoletra").selectpicker('refresh');
     $("#numeroletra").val("");
     $("#numerofactura").val("");
     $("#lugargiro").val(0);
     $("#lugargiro").selectpicker('refresh');
     $("#fechaemision").val("");
     $("#fechavencimiento").val("");
-    $("#numerounico").val("");
     $("#tipoMoneda").val(0);
     $("#tipoMoneda").selectpicker('refresh');
     $("#totalletra").val("");
@@ -59,7 +53,6 @@ function mostrarform(flag) {
         $("#formularioregistros").show();
         $("#btnGuardar").prop("disabled", false);
         $("#btnagregar").hide();
-        $("#btnAgregarNumeroUnico").hide();
         $("#divcondicion").hide();
         $("#divListadoDetalleLetra").hide();
     }
@@ -94,7 +87,7 @@ function listar() {
             ],
             "ajax":
             {
-                url: '../ajax/letras.php?op=listar',
+                url: '../ajax/letrasCartera.php?op=listar',
                 type: "get",
                 dataType: "json",
                 error: function (e) {
@@ -115,7 +108,7 @@ function guardaryeditar(e) {
     console.log(formData);
 
     $.ajax({
-        url: "../ajax/letras.php?op=guardaryeditar",
+        url: "../ajax/letrasCartera.php?op=guardaryeditar",
         type: "POST",
         data: formData,
         contentType: false,
@@ -137,20 +130,17 @@ function mostrar(idletra) {
         data = JSON.parse(data);
         mostrarform(true);
         $("#btnGuardar").prop("disabled", true);
-        $("#btnAgregarNumeroUnico").show();
         console.log('--- ' + data);
         $("#id_cliente").val(data.idcliente);
         $("#id_cliente").selectpicker('refresh');
         $("#totalRenovacion").val(data.totalRenovacion);
         $("#tipoletra").val(data.tipo_letra);
-        //$("#tipoletra").selectpicker('refresh');
         $("#numeroletra").val(data.num_letra);
         $("#numerofactura").val(data.num_factura);
         $("#lugargiro").val(data.lugar_giro);
         $("#lugargiro").selectpicker('refresh');
         $("#fechaemision").val(data.fecha_emi);
         $("#fechavencimiento").val(data.fecha_ven);
-        $("#numerounico").val(data.num_unico);
         $("#tipoMoneda").val(data.moneda);
         $("#tipoMoneda").selectpicker('refresh');
         $("#totalletra").val(data.total);
@@ -411,33 +401,6 @@ function guardaryeditar_DetalleLetras(e) {
 
 function MuestraFrmNumUnico() {
 }
-
-$("#btnAgregarNumeroUnico").click(function () {
-    let numero = prompt("Ingrese el número Unico", "");
-    if (numero != null) {
-        $.ajax({
-            url: "../ajax/letras.php?op=actualizarNumeroUnico",
-            type: "POST",
-            data: { "idletra": idLetraActualizaNU, "numerounico": numero },
-            success: function (datos) {
-                bootbox.alert(datos);
-                mostrarform(false);
-                tabla.ajax.reload();
-            }
-        });
-    } else {
-        alert("No ingreso un numero valido");
-    }
-    /*
-    var bool=confirm("Esta seguro de agregar el numero Unico para la Letra ?");
-    if(bool){
-      alert("se elimino correctamente");
-    }else{
-      alert("cancelo la solicitud");
-    }
-    */
-});
-
 
 
 //Función Listar

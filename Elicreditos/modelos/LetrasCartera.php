@@ -1,59 +1,12 @@
 <?php
 //incluir la conexion de base de datos
 require "../config/conexion.php";
-class Letras
+class LetrasCartera
 {
 
     //implementamos nuestro constructor
     public function __construct()
     {
-    }
-    //metodo insertar registro
-    public function insertar(
-        $idcliente,
-        $tipo_letra,
-        $num_letra,
-        $num_factura,
-        $lugar_giro,
-        $fecha_emi,
-        $fecha_ven,
-        $num_unico,
-        $moneda,
-        $total,
-        $condicion,
-        $fechagrabacion
-    ) {
-        $sql = "INSERT INTO letras(idletra
-                            , idcliente
-                            , tipo_letra
-                            , num_letra
-                            , num_factura
-                            , lugar_giro
-                            , fecha_emi
-                            , fecha_ven
-                            , num_unico
-                            , moneda
-                            , total
-                            , condicion
-                            , fechagrabacion) 
-                            VALUES (
-                            NULL
-                            , '$idcliente'
-                            , '$tipo_letra'
-                            , '$num_letra'
-                            , '$num_factura'
-                            , '$lugar_giro'
-                            , '$fecha_emi'
-                            , '$fecha_ven'
-                            , '$num_unico'
-                            , '$moneda'
-                            , '$total'
-                            -- , '$condicion'
-                            , '1'
-                            , '$fechagrabacion'
-                            )";
-        return ejecutarConsulta($sql);
-        //return $sql;
     }
 
     public function listar()
@@ -72,8 +25,53 @@ class Letras
         , l.total
         , l.condicion
         , l.fechagrabacion 
-        FROM letras l LEFT JOIN persona p ON l.idcliente = p.idpersona";
+        FROM letras_cartera l LEFT JOIN persona p ON l.idcliente = p.idpersona";
         return ejecutarConsulta($sql);
+    }
+
+    //metodo insertar registro
+    public function insertar(
+        $idcliente,
+        $tipo_letra,
+        $num_letra,
+        $num_factura,
+        $lugar_giro,
+        $fecha_emi,
+        $fecha_ven,
+        $moneda,
+        $total,
+        $condicion,
+        $fechagrabacion
+    ) {
+        $sql = "INSERT INTO letras_cartera(idletra
+                            , idcliente
+                            , tipo_letra
+                            , num_letra
+                            , num_factura
+                            , lugar_giro
+                            , fecha_emi
+                            , fecha_ven
+                            , moneda
+                            , total
+                            , condicion
+                            , fechagrabacion) 
+                            VALUES (
+                            NULL
+                            , '$idcliente'
+                            , '$tipo_letra'
+                            , '$num_letra'
+                            , '$num_factura'
+                            , '$lugar_giro'
+                            , '$fecha_emi'
+                            , '$fecha_ven'
+                            , '$moneda'
+                            , '$total'
+                            -- , '$condicion'
+                            , '1'
+                            , '$fechagrabacion'
+                            )";
+        return ejecutarConsulta($sql);
+        //return $sql;
     }
 
     public function mostrar($idletra)
@@ -111,13 +109,6 @@ class Letras
         //return $sql;
     }
 
-    public function actualizarNumeroUnico($idletra, $numerounico)
-    {
-        $sql = "UPDATE letras SET num_unico ='$numerounico' WHERE idletra ='$idletra'";
-        return ejecutarConsulta($sql);
-        //return $sql;
-    }
-    
     public function obtieneDeudaPendiente($idletra)
     {
         $sql = "SELECT (total + 
@@ -127,5 +118,4 @@ class Letras
         return ejecutarConsultaSimpleFila($sql);
         //return $sql;
     }
-    
 }

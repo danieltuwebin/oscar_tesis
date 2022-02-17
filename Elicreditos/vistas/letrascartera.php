@@ -24,7 +24,7 @@ if (!isset($_SESSION["nombre"])) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Letras Banco&nbsp;
+                <h1 class="box-title">Letras Cartera&nbsp;
                   <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button>
                   <!--<a target="_blank" href="../reportes/rptclientes.php">
                      <button class="btn btn bg-blue"><i class="fa fa-file"></i>Reporte</button>
@@ -83,12 +83,7 @@ if (!isset($_SESSION["nombre"])) {
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
                     <label for="">Tipo Letra(*):</label>
-                    <input type="text" class="form-control" name="tipoletra" id="tipoletra" maxlength="20" value="LETRA BANCO" readonly>
-                    <!--<select name="tipoletra" id="tipoletra" class="form-control" disabled="disabled">
-                      <option value="">Seleccione Tipo de Letra</option>
-                      <option value="LETRA CARTERA">LETRA CARTERA</option>
-                      <option value="LETRA BANCO">LETRA BANCO</option>-->
-                    </select>
+                    <input type="text" class="form-control" name="tipoletra" id="tipoletra" maxlength="20" value="LETRA CARTERA" readonly>
                   </div>
 
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -120,11 +115,6 @@ if (!isset($_SESSION["nombre"])) {
                     <input class="form-control" type="date" name="fechavencimiento" id="fechavencimiento" maxlength="100">
                   </div>
 
-                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Numero Unico:</label>
-                    <input type="text" class="form-control" name="numerounico" id="numerounico" maxlength="70">
-                  </div>
-
                   <div class="form-group col-lg-3 col-md-6 col-xs-12">
                     <label for="">Tipo Moneda(*):</label>
                     <select name="tipoMoneda" id="tipoMoneda" class="form-control selectpicker">
@@ -150,13 +140,11 @@ if (!isset($_SESSION["nombre"])) {
                         <thead>
                           <th>Id</th>
                           <th>Tipo Letra</th>
-                          <th>Nro. Pago</th>
+                          <th>Nro. Recibo</th>
+                          <th>Nro. Operación</th>
+                          <th>Descripción</th>
                           <th>F. Pago</th>
-                          <th>F. Renovación</th>
-                          <th>F. Vencimiento</th>
-                          <th>F. Protesto</th>
-                          <th>comisión</th>
-                          <th>Total</th>
+                          <th>Total Pago</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -166,8 +154,6 @@ if (!isset($_SESSION["nombre"])) {
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i> Guardar</button>
-                    <!--<button class="btn btn-info" onclick="MuestraFrmNumUnico()" type="button" id="btnAgregarNumeroUnico"><i class="fa fa-plus"></i> Agregar Nro.Unico</button>-->
-                    <button class="btn btn-info" type="button" id="btnAgregarNumeroUnico"><i class="fa fa-plus"></i> Agregar Nro.Unico</button>
                     <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
                   </div>
                 </form>
@@ -186,50 +172,29 @@ if (!isset($_SESSION["nombre"])) {
                     </select>
                   </div>
 
-                  <div id="DivPagoLetra">
-                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                      <label>Numero Pago(*):</label>
-                      <input type="text" id="numeroPago" name="numeroPago" class="form-control">
-                    </div>
-
-                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                      <label for="">Fecha Pago(*):</label>
-                      <input class="form-control" type="date" name="fechapago" id="fechapago">
-                    </div>
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label>Numero Recibo(*):</label>
+                    <input type="text" id="numeroRecibo" name="numeroRecibo" class="form-control">
                   </div>
 
-                  <div id="DivRenovacion">
-                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                      <label for="">Fecha Renovacion(*):</label>
-                      <input class="form-control" type="date" name="fecharenovacion" id="fecharenovacion">
-                    </div>
-
-                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                      <label for="">Fecha Vencimiento(*):</label>
-                      <input class="form-control" type="date" name="fechavencimiento" id="fechavencimiento">
-                    </div>
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label>Numero Operación(*):</label>
+                    <input type="text" id="numeroOperacion" name="numeroOperacion" class="form-control">
                   </div>
 
-                  <div id="DivProtesto">
-                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                      <label for="">Fecha Protesto(*):</label>
-                      <input class="form-control" type="date" name="fechaprotesto" id="fechaprotesto">
-                    </div>
-
-                    <div class="form-group col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                      <label>Comisión Protesto(*):</label>
-                      <input type="text" id="comisionprotesto" name="comisionprotesto" class="form-control">
-                    </div>
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label>Descripción(*):</label>
+                    <input type="text" id="descripcion" name="descripcion" class="form-control">
                   </div>
 
-                  <div id="DivTotalPago" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                    <label for="">Fecha Pago(*):</label>
+                    <input class="form-control" type="date" name="fechapago" id="fechapago">
+                  </div>
+
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <label id="EiquetaPago">Total Pago(*):</label>
                     <input type="text" class="form-control" name="montopagoDetalle" id="montopagoDetalle">
-                  </div>
-
-                  <div id="DivPeudaPendiente" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label id="EiquetaPago">Deuda Pendiente:</label>
-                    <input type="text" class="form-control" name="deudaPendiente" id="deudaPendiente" readonly>
                   </div>
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -254,7 +219,7 @@ if (!isset($_SESSION["nombre"])) {
   }
   require 'footer.php';
   ?>
-  <script type="text/javascript" src="scripts/letrasbco.js"></script>
+  <script type="text/javascript" src="scripts/letrascartera.js"></script>
 
 <?php
 }

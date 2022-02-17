@@ -51,6 +51,7 @@ class DetalleLetras
         //return $sql;
     }
 
+    /*
     public function listar()
     {
         $sql = "SELECT l.idletra
@@ -68,6 +69,22 @@ class DetalleLetras
         , l.condicion
         , l.fechagrabacion 
         FROM letras l LEFT JOIN persona p ON l.idcliente = p.idpersona";
+        return ejecutarConsulta($sql);
+    }
+    */
+
+    public function listar($idLetra)
+    {
+        $sql = "SELECT idDetalleLetra
+        ,IF(tipoDetalleLetra = 1, 'PAGO LETRA'
+        ,IF(tipoDetalleLetra = 2, 'RENOVACION'
+        ,IF(tipoDetalleLetra = 3, 'PROTESTO',''))) AS tipopagoletra
+        , tipo1_numeroPago
+        , tipo2_FechaRenovacion
+        ,tipo2_FechaVencimiento
+        ,tipo3_FechaProtesto
+        ,tipo3_Comision,total 
+        FROM detalle_letras WHERE idletra = '$idLetra'";
         return ejecutarConsulta($sql);
     }
 

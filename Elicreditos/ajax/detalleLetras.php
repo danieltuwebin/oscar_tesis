@@ -22,7 +22,7 @@ $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 
 switch ($_GET["op"]) {
 
-	case 'listar':
+	/*case 'listar':
 		$rspta = $letras->listar();
 		//declaramos un array
 		$data = array();
@@ -30,9 +30,9 @@ switch ($_GET["op"]) {
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
 				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra .',1'.')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra .',2'.')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra .',3'.')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra . ',1' . ')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2' . ')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3' . ')"><i class="fa fa-pencil"></i></button>'
 					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
 				//"0" => $reg->idamortizacion,
 				"1" => $reg->idletra,
@@ -59,7 +59,39 @@ switch ($_GET["op"]) {
 		echo json_encode($results);
 
 		break;
+	*/
 
+	case 'listar':
+		//die('123');
+		$id = $_GET["id"];
+		$rspta = $detalleLetras->listar($id);
+		//declaramos un array
+		$data = array();
+
+		while ($reg = $rspta->fetch_object()) {
+			$data[] = array(
+				"0" => $reg->idDetalleLetra,
+				"1" => $reg->tipopagoletra,
+				"2" => $reg->tipo1_numeroPago,
+				"3" => $reg->tipo1_Fechapago,
+				"4" => $reg->tipo2_FechaRenovacion,
+				"5" => $reg->tipo2_FechaVencimiento,
+				"6" => $reg->tipo3_FechaProtesto,
+				"7" => $reg->tipo3_Comision,
+				"8" => $reg->total
+			);
+		}
+
+		$results = array(
+			"sEcho" => 1, //info para datatables
+			"iTotalRecords" => count($data), //enviamos el total de registros al datatable
+			"iTotalDisplayRecords" => count($data), //enviamos el total de registros a visualizar
+			"aaData" => $data
+		);
+		echo json_encode($results);
+
+		break;
+	
 	case 'guardaryeditar':
 		if (empty($idLetra)) {
 			$rspta = $detalleLetras->insertar(
