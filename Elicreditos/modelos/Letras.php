@@ -89,7 +89,9 @@ class Letras
         , l.fecha_ven
         , l.num_unico
         , UPPER(l.moneda) AS moneda
-        , l.total
+        -- , l.total
+        , (SELECT SUM(tipo3_Comision) FROM detalle_letras WHERE idletra = '$idletra') + l.total AS total
+        , (SELECT IFNULL(SUM(total), 0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 2) AS totalRenovacion
         , l.condicion
         , l.fechagrabacion 
         FROM letras l LEFT JOIN persona p ON l.idcliente = p.idpersona

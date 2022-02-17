@@ -75,6 +75,7 @@ if (!isset($_SESSION["nombre"])) {
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
                     <input type="hidden" name="idletra" id="idletra">
+                    <input type="hidden" name="totalRenovacion" id="totalRenovacion">
                     <label>Nombre de Cliente(*):</label>
                     <select id="id_cliente" name="id_cliente" class="form-control selectpicker" data-live-search="true" maxlength="100">
                     </select>

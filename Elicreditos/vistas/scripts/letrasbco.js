@@ -30,6 +30,7 @@ function init() {
 function limpiar() {
     $("#idpersona").val("");
     $("#idletra").val("");
+    $("#totalRenovacion").val("");
     $("#id_cliente").val("");
     $("#id_cliente").selectpicker('refresh');
     $("#tipoletra").val(0);
@@ -133,6 +134,7 @@ function mostrar(idletra) {
         console.log('--- ' + data);
         $("#id_cliente").val(data.idcliente);
         $("#id_cliente").selectpicker('refresh');
+        $("#totalRenovacion").val(data.totalRenovacion);
         $("#tipoletra").val(data.tipo_letra);
         $("#tipoletra").selectpicker('refresh');
         $("#numeroletra").val(data.num_letra);
@@ -172,6 +174,10 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
         $("#EiquetaPago").show();
         $("#montopagoDetalle").show();
         $("#EiquetaPago").html('Total Renovacion');
+        $("#montoidLetra").val(monto);
+        $("#tipoLetraDetalle").val(tipoLetra);
+        $("#nombreDetalle").val(idcliente);
+        $("#nombreDetalle").selectpicker('refresh');
     } else if (tipoLetra == 3) {
         $("#DivPagoLetra").hide();
         $("#DivRenovacion").hide();
@@ -219,50 +225,145 @@ function cancelarform_LetraPago() {
 
 //Función para guardar o editar
 function guardaryeditar_DetalleLetras(e) {
-    
+
     e.preventDefault(); //No se activará la acción predeterminada del evento
-    if (parseFloat($("#montoidLetra").val()) == parseFloat($("#montopagoDetalle").val()) && $("#tipoLetraDetalle").val() == '1') {
+
+    // PARA EL PAGO LETRA
+    if ($("#tipoLetraDetalle").val() == '1') {
+        if (parseFloat($("#montoidLetra").val()) == parseFloat($("#montopagoDetalle").val()) && $("#tipoLetraDetalle").val() == '1') {
+            $("#btnGuardarLetraPago").prop("disabled", true);
+            var formData = new FormData($("#formularioDetalleLetras")[0]);
+
+            // GRB DETALLE-LETRA
+            $.ajax({
+                url: "../ajax/detalleLetras.php?op=guardaryeditar",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (datos) {
+                    valorRespuesta = datos;
+                }
+            });
+
+            //ACTUALIZA ESTADO
+            if (valorRespuesta == 1) {
+                $.ajax({
+                    url: "../ajax/letras.php?op=actualizarEstado",
+                    type: "POST",
+                    data: { "idletra": $("#idLetraDetalle").val(), "condicion": '4' },
+                    success: function (datos) {
+                        bootbox.alert(datos);
+                    }
+                });
+            }
+
+            // MUESTRA-CARGA-LIMPIA FRM
+            mostrarform_LetrasBco(false);
+            tabla.ajax.reload();
+        } else {
+            alert("EL MONTO DE PAGO ES DIFERENTE AL TOTAL DE LA LETRA");
+        }
+    }
+
+    // PARA EL PAGO RENOVACION
+    if ($("#tipoLetraDetalle").val() == '2') {
+
+        // OBTIENE (totalRenovacion)
+        $.ajax({
+            url: "../ajax/letras.php?op=mostrar",
+            type: "POST",
+            data: { "idletra": $("#idLetraDetalle").val() },
+            async: false,
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log('--- ' + data.totalRenovacion);
+                $("#totalRenovacion").val(data.totalRenovacion);
+            }
+        });
+
+        // GRB DETALLE-LETRA
+        if (parseFloat($("#montoidLetra").val()) >= (parseFloat($("#montopagoDetalle").val()) + parseFloat($("#totalRenovacion").val())) && $("#tipoLetraDetalle").val() == '2') {
+            $("#btnGuardarLetraPago").prop("disabled", true);
+            var formData = new FormData($("#formularioDetalleLetras")[0]);
+            $.ajax({
+                url: "../ajax/detalleLetras.php?op=guardaryeditar",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function (datos) {
+                    valorRespuesta = datos;
+                }
+            });
+
+            //ACTUALIZA ESTADO PAGADO
+            if (valorRespuesta == 1 && parseFloat($("#montoidLetra").val()) == (parseFloat($("#montopagoDetalle").val()) + parseFloat($("#totalRenovacion").val()))) {
+                $.ajax({
+                    url: "../ajax/letras.php?op=actualizarEstado",
+                    type: "POST",
+                    data: { "idletra": $("#idLetraDetalle").val(), "condicion": '4' },
+                    success: function (datos) {
+                        bootbox.alert(datos);
+                    }
+                });
+                //ACTUALIZA ESTADO RENOVACION
+            } else if (valorRespuesta == 1) {
+                $.ajax({
+                    url: "../ajax/letras.php?op=actualizarEstado",
+                    type: "POST",
+                    data: { "idletra": $("#idLetraDetalle").val(), "condicion": '2' },
+                    success: function (datos) {
+                        bootbox.alert(datos);
+                    }
+                });
+            }
+
+            // MUESTRA-CARGA-LIMPIA FRM
+            mostrarform_LetrasBco(false);
+            tabla.ajax.reload();
+
+        } else {
+            alert("EL MONTO DE PAGO ES DIFERENTE AL TOTAL O UNA FRACCION DE LA LETRA");
+        }
+    }
+
+    // PARA EL PAGO RENOVACION
+    if ($("#tipoLetraDetalle").val() == '3') {
+
+        // GRB DETALLE-LETRA
         $("#btnGuardarLetraPago").prop("disabled", true);
         var formData = new FormData($("#formularioDetalleLetras")[0]);
-        console.log(formData);
-
         $.ajax({
             url: "../ajax/detalleLetras.php?op=guardaryeditar",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
-            async:false,
+            async: false,
             success: function (datos) {
-                console.log(datos);
                 valorRespuesta = datos;
-                //bootbox.alert(datos);
-                //mostrarform(false);
-                //tabla.ajax.reload();
             }
         });
 
+        //ACTUALIZA ESTADO PROTESTO
         if (valorRespuesta == 1) {
             $.ajax({
                 url: "../ajax/letras.php?op=actualizarEstado",
                 type: "POST",
-                data: { "idletra": $("#idLetraDetalle").val(), "condicion": '4' },
-                //data: formData2,
-                //contentType: false,
-                //processData: false,
+                data: { "idletra": $("#idLetraDetalle").val(), "condicion": '3' },
                 success: function (datos) {
-                    console.log(datos);
                     bootbox.alert(datos);
-                    //mostrarform_LetrasBco(false);
-                    //tabla.ajax.reload();
                 }
             });
         }
+
+        // MUESTRA-CARGA-LIMPIA FRM
         mostrarform_LetrasBco(false);
         tabla.ajax.reload();
-        //limpiar_LetrasBco();
-    } else {
-        alert("EL MONTO DE PAGO ES DIFERENTE AL TOTAL DE LA LETRA");
+
     }
 }
 
