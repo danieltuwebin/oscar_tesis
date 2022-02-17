@@ -497,3 +497,6 @@ ALTER TABLE `detalle_letras` ADD `tipo3_FechaProtesto` DATE NOT NULL DEFAULT '19
 
 ALTER TABLE `detalle_letras` ADD `fechagrabacion` DATETIME NOT NULL AFTER `total`;
 
+
+ALTER TABLE `letras_cartera` CHANGE `condicion` `condicion` TINYINT(1) NOT NULL COMMENT '1-pendiente:2-pagado ';
+
