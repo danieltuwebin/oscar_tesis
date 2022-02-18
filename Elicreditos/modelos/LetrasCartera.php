@@ -78,7 +78,7 @@ class LetrasCartera
     {
         $sql = "SELECT l.idletra
         , l.idcliente
-        , p.nombre
+        , c.nombre
         , UPPER(l.tipo_letra) AS tipo_letra
         , UPPER(l.num_letra) AS num_letra
         , UPPER(l.num_factura) AS num_factura
@@ -87,16 +87,15 @@ class LetrasCartera
         , l.fecha_ven
         , l.num_unico
         , UPPER(l.moneda) AS moneda
-        -- , l.total
-        , (SELECT SUM(tipo3_Comision) FROM detalle_letras WHERE idletra = '$idletra') + l.total AS total
-        -- , (SELECT IFNULL(SUM(total), 0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 2) AS totalRenovacion
-        , (SELECT (total + 
-                        (SELECT IFNULL(sum(tipo3_Comision),0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 3)) - 
-                        (SELECT IFNULL(sum(total),0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 2) as total 
-                        FROM letras WHERE idletra = '$idletra') AS totalRenovacion
+        , l.total
+        , ifnull(sum(p.total_pago),0) as pagorealizado
+        -- , ifnull((l.total - sum(p.total_pago)),0) as pagopendiente
+        , ifnull((l.total - ifnull(sum(p.total_pago),0)),0) as pagopendiente
         , l.condicion
         , l.fechagrabacion 
-        FROM letras l LEFT JOIN persona p ON l.idcliente = p.idpersona
+        FROM letras_cartera l 
+        LEFT JOIN pago_letraCartera p ON l.idletra = p.idletra
+        LEFT JOIN persona c ON c.idpersona = l.idcliente
         WHERE l.idletra = '$idletra'";
         return ejecutarConsultaSimpleFila($sql);
         //return $sql;
@@ -104,17 +103,18 @@ class LetrasCartera
 
     public function actualizarEstado($idletra, $condicion)
     {
-        $sql = "UPDATE letras SET condicion ='$condicion' WHERE idletra ='$idletra'";
+        $sql = "UPDATE letras_cartera SET condicion ='$condicion' WHERE idletra ='$idletra'";
         return ejecutarConsulta($sql);
         //return $sql;
     }
 
     public function obtieneDeudaPendiente($idletra)
     {
-        $sql = "SELECT (total + 
-                        (SELECT IFNULL(sum(tipo3_Comision),0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 3)) - 
-                        (SELECT IFNULL(sum(total),0) FROM detalle_letras WHERE idletra = '$idletra' and tipoDetalleLetra = 2) as total 
-                        FROM letras WHERE idletra = '$idletra'";
+        $sql = "SELECT l.idletra
+                , ifnull((l.total - ifnull(sum(p.total_pago),0)),0) as total
+                FROM letras_cartera l 
+                LEFT JOIN pago_letraCartera p ON l.idletra = p.idletra
+                WHERE l.idletra = '$idletra'";
         return ejecutarConsultaSimpleFila($sql);
         //return $sql;
     }

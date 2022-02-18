@@ -25,13 +25,12 @@ switch ($_GET["op"]) {
 		$rspta = $letrasCartera->listar();
 		//declaramos un array
 		$data = array();
-
 		//https://wiki.php.net/rfc/ternary_associativity
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
-				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button class="btn btn-warning btn-xs" onclick="amortizar(' . $reg->idamortizacion .',&apos;'. $reg->nombre .'&apos;)"><i class="fa fa-pencil"></i></button>'
-					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>',
+				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
+					. ' ' . '<button class="btn btn-warning btn-xs" onclick="pagoLetra(' . $reg->idletra . ',&apos;' . $reg->nombre . '&apos;)"><i class="fa fa-pencil"></i></button>'
+					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
 				"1" => $reg->idletra,
 				"2" => $reg->nombre,
 				"3" => $reg->tipo_letra,
@@ -40,14 +39,12 @@ switch ($_GET["op"]) {
 				"6" => $reg->lugar_giro,
 				"7" => $reg->fecha_emi,
 				"8" => $reg->fecha_ven,
-				"9" => $reg->num_unico,
-				"10" => $reg->moneda,
-				"11" => $reg->total,
-				"12" => $reg->condicion == 1 ? '<span class="label bg-red">Pendiente</span>' 
-				: '<span class="label bg-green">Pagado</span>'
+				"9" => $reg->moneda,
+				"10" => $reg->total,
+				"11" => $reg->condicion == 1 ? '<span class="label bg-red">Pendiente</span>'
+					: '<span class="label bg-green">Pagado</span>'
 			);
 		}
-
 		$results = array(
 			"sEcho" => 1, //info para datatables
 			"iTotalRecords" => count($data), //enviamos el total de registros al datatable
@@ -73,14 +70,9 @@ switch ($_GET["op"]) {
 				$condicion,
 				$fechagrabacion
 			);
-
-			//echo $id_cliente.'-'.$tipoletra.'-'.$numeroletra.'-'.$numerofactura.'-'.$lugargiro.'-'.
-			//--$fechaemision.'-'.$fechavencimiento.'-'.$numerounico.'-'.$tipoMoneda.'-'.$totalletra.'-'.$condicion.'-'.$fechagrabacion;
 			echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar todos los datos del Trabajador";
 			//echo $rspta;
-
 		} else {
-			//$rspta = $amortizacion->editar($id_formacion, $id_trabajador, $nivelEducativo, $gradoEducativo, $nombreProfesion, $numeroColegiatura, $maestria, $doctorado, $institucionEducativa, $fechaExpedicionTitulo);
 			//echo $rspta ? "Datos actualizados correctamente" : "No se pudo actualizar los datos";
 			//echo $rspta;
 		}
@@ -88,20 +80,19 @@ switch ($_GET["op"]) {
 		break;
 
 	case 'mostrar':
-		$rspta = $letras->mostrar($idletra);
+		$rspta = $letrasCartera->mostrar($idletra);
 		echo json_encode($rspta);
 		//echo $rspta;
-		//echo '1234 '.$idamortizacion;
 		break;
 
 	case 'actualizarEstado':
-		$rspta = $letras->actualizarEstado($idletra, $condicion);
+		$rspta = $letrasCartera->actualizarEstado($idletra, $condicion);
 		echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		//echo $rspta;
 		break;
 
 	case 'obtieneDeudaPendiente':
-		$rspta = $letras->obtieneDeudaPendiente($idletra);
+		$rspta = $letrasCartera->obtieneDeudaPendiente($idletra);
 		//echo $rspta ? "Datos registrados correctamente" : "No se pudo registrar los datos";
 		echo json_encode($rspta);
 		break;

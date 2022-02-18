@@ -500,3 +500,17 @@ ALTER TABLE `detalle_letras` ADD `fechagrabacion` DATETIME NOT NULL AFTER `total
 
 ALTER TABLE `letras_cartera` CHANGE `condicion` `condicion` TINYINT(1) NOT NULL COMMENT '1-pendiente:2-pagado ';
 
+ CREATE TABLE pago_letraCartera (
+ idpago_letraCartera int(11) NOT NULL AUTO_INCREMENT,
+ idletra int(11) NOT NULL,
+ num_recivo varchar(20) COLLATE latin1_spanish_ci NOT NULL,
+ nump_op varchar(50) COLLATE latin1_spanish_ci NOT NULL,
+ descrip varchar(100) COLLATE latin1_spanish_ci NOT NULL,
+ fecha_pago date NOT NULL,
+ total_pago decimal(11,2) NOT NULL,
+ fechagrabacion datetime NOT NULL,
+ PRIMARY KEY (idpago_letraCartera)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+
+ALTER TABLE `pago_letraCartera` CHANGE `num_recivo` `num_recibo` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL;

@@ -45,7 +45,6 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Lugar Giro</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
-                    <th>Num. Unico</th>
                     <th>Moneda</th>
                     <th>Total</th>
                     <th>Estado</th>
@@ -62,7 +61,6 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Lugar Giro</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
-                    <th>Num. Unico</th>
                     <th>Moneda</th>
                     <th>Total</th>
                     <th>Estado</th>
@@ -75,7 +73,8 @@ if (!isset($_SESSION["nombre"])) {
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
                     <input type="hidden" name="idletra" id="idletra">
-                    <input type="hidden" name="totalRenovacion" id="totalRenovacion">
+                    <input type="hidden" name="totalPagoRealizado" id="totalPagoRealizado">
+                    <input type="hidden" name="totalPagoPendiente" id="totalPagoPendiente">
                     <label>Nombre de Cliente(*):</label>
                     <select id="id_cliente" name="id_cliente" class="form-control selectpicker" data-live-search="true" maxlength="100">
                     </select>
@@ -166,10 +165,8 @@ if (!isset($_SESSION["nombre"])) {
                     <input type="hidden" name="id" id="id">
                     <input type="hidden" name="idLetraDetalle" id="idLetraDetalle">
                     <input type="hidden" name="montoidLetra" id="montoidLetra">
-                    <input type="hidden" name="tipoLetraDetalle" id="tipoLetraDetalle">
                     <label>Nombre de Cliente:</label>
-                    <select id="nombreDetalle" name="nombreDetalle" class="form-control selectpicker" data-live-search="true" maxlength="100" disabled>
-                    </select>
+                    <input type="text" id="nombreDetalle" name="nombreDetalle" class="form-control" readonly>
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
@@ -196,6 +193,11 @@ if (!isset($_SESSION["nombre"])) {
                     <label id="EiquetaPago">Total Pago(*):</label>
                     <input type="text" class="form-control" name="montopagoDetalle" id="montopagoDetalle">
                   </div>
+
+                  <div id="divDeudaPendiente" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label>Deuda Pendiente:</label>
+                    <input type="text" class="form-control" name="deudapendiente" id="deudapendiente" readonly>
+                  </div>                  
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardarLetraPago"><i class="fa fa-save"></i> Guardar</button>
