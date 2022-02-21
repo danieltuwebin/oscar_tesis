@@ -72,3 +72,6 @@ FORMULARIO LETRAS CARTERA
 --------------------------**
 
 EN CHUQUE QUE PERMITA VER IMAGEN
+
+
+-------- var cheque

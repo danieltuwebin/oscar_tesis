@@ -1,17 +1,18 @@
 var tabla;
+var tabla2;
 
 //Función que se ejecuta al inicio
 function init() {
     mostrarform(false);
-    mostrarform_LetrasBco(false);
+    mostrarform_PagoCheque(false);
     listar();
 
     $("#formulario").on("submit", function (e) {
         guardaryeditar(e);
     })
 
-    $("#formularioDetalleLetras").on("submit", function (e) {
-        guardaryeditar_Amortizacion(e);
+    $("#formularioregistrosPagoCheque").on("submit", function (e) {
+        guardaryeditar_PagoCheque(e);
     })
 
     $.post("../ajax/persona.php?op=SelectPersona", function (r) {
@@ -25,21 +26,22 @@ function init() {
 //Función limpiar
 function limpiar() {
     $("#idpersona").val("");
-    $("#idletra").val("");
+    $("#idCheque").val("");
     $("#id_cliente").val("");
     $("#id_cliente").selectpicker('refresh');
-    $("#tipoletra").val(0);
-    $("#tipoletra").selectpicker('refresh');
-    $("#numeroletra").val("");
-    $("#numerofactura").val("");
-    $("#lugargiro").val(0);
-    $("#lugargiro").selectpicker('refresh');
+    $("#tipocheque").val("");
+    $("#tipocheque").selectpicker('refresh');
+    $("#banco").val("");
+    $("#banco").selectpicker('refresh');
+    $("#tipodocumento").val("");
+    $("#tipodocumento").selectpicker('refresh');
+    $("#numerodocumento").val("");
     $("#fechaemision").val("");
     $("#fechavencimiento").val("");
-    $("#numerounico").val("");
-    $("#tipoMoneda").val(0);
+    $("#tipoMoneda").val("");
     $("#tipoMoneda").selectpicker('refresh');
-    $("#totalletra").val("");
+    $("#monto").val("");
+    $("#imagen").val("");
     $("#condicion").val("");
 }
 
@@ -66,7 +68,7 @@ function mostrarform(flag) {
 function cancelarform() {
     limpiar();
     mostrarform(false);
-    mostrarform_LetrasBco(false);
+    mostrarform_PagoCheque(false);
 }
 
 //Función Listar
@@ -84,7 +86,7 @@ function listar() {
             ],
             "ajax":
             {
-                url: '../ajax/letras.php?op=listar',
+                url: '../ajax/cheques.php?op=listar',
                 type: "get",
                 dataType: "json",
                 error: function (e) {
@@ -105,12 +107,11 @@ function guardaryeditar(e) {
     console.log(formData);
 
     $.ajax({
-        url: "../ajax/letras.php?op=guardaryeditar",
+        url: "../ajax/cheques.php?op=guardaryeditar",
         type: "POST",
         data: formData,
         contentType: false,
         processData: false,
-
         success: function (datos) {
             console.log(datos);
             bootbox.alert(datos);
@@ -121,126 +122,106 @@ function guardaryeditar(e) {
     limpiar();
 }
 
-function mostrar(idletra) {
-    //alert(idamortizacion);
-    $.post("../ajax/letras.php?op=mostrar", { idletra: idletra }, function (data, status) {
+function mostrar(idcheque) {
+    $.post("../ajax/cheques.php?op=mostrar", { idcheque: idcheque }, function (data, status) {
         data = JSON.parse(data);
         mostrarform(true);
         console.log('--- ' + data);
         $("#id_cliente").val(data.idcliente);
         $("#id_cliente").selectpicker('refresh');
-        $("#tipoletra").val(data.tipo_letra);
-        $("#tipoletra").selectpicker('refresh');
-        $("#numeroletra").val(data.num_letra);
-        $("#numerofactura").val(data.num_factura);
-        $("#lugargiro").val(data.lugar_giro);
-        $("#lugargiro").selectpicker('refresh');
+        $("#tipocheque").val(data.tipo_cheque);
+        $("#tipocheque").selectpicker('refresh');
+        $("#banco").val(data.bco_cheque);
+        $("#banco").selectpicker('refresh');
+        $("#tipodocumento").val(data.doc_pago);
+        $("#tipodocumento").selectpicker('refresh');
+        $("#numerodocumento").val(data.num_docpago);
         $("#fechaemision").val(data.fecha_emi);
         $("#fechavencimiento").val(data.fecha_ven);
-        $("#numerounico").val(data.num_unico);
         $("#tipoMoneda").val(data.moneda);
         $("#tipoMoneda").selectpicker('refresh');
-        $("#totalletra").val(data.total);
+        $("#monto").val(data.monto);
         $("#condicion").show();
         $("#condicion").val(data.condicion == 1 ? "PENDIENTE" : "OTRO");
+
+        listar_PagoCheque(idcheque);
     })
 }
 
-// PARA AGREGAR PAGO AMORTIZACION
-function detalleLetra(idletra, tipoLetra) {
-    mostrarform_LetrasBco(true)
-    $("#idLetraDetalle").val(idletra);
-    if (tipoLetra == 1) {
-        $("#DivPagoLetra").show();
-        $("#DivRenovacion").hide();
-        $("#DivProtesto").hide();
-        $("#EiquetaPago").show();
-        $("#montopagoDetalle").show();
-        $("#EiquetaPago").html('Total Pago');
-    } else if (tipoLetra == 2) {
-        $("#DivPagoLetra").hide();
-        $("#DivRenovacion").show();
-        $("#DivProtesto").hide();
-        $("#EiquetaPago").show();
-        $("#montopagoDetalle").show();
-        $("#EiquetaPago").html('Total Renovacion');
-    } else if (tipoLetra == 3) {
-        $("#DivPagoLetra").hide();
-        $("#DivRenovacion").hide();
-        $("#DivProtesto").show();
-        $("#EiquetaPago").hide();
-        $("#montopagoDetalle").hide();
-    }
 
-
-    //$("#nombreDetalle").val(nombreCliente);
-    //$("#idamortizacion").val(idamortizacion);
-    //obtenerPendientePagoAmortizacion(idamortizacion);
+function pagoCheque(idCheque, nombreCliente) {
+    mostrarform_PagoCheque(true)
+    $("#idCheque").val(idCheque);
+    $("#nombreDetalle").val(nombreCliente);
+    obtenerPendientePagosCheque(idCheque);
 }
 
-function mostrarform_LetrasBco(flag) {
-    limpiar_LetrasBco();
+function mostrarform_PagoCheque(flag) {
+    limpiar_PagoCheque();
     if (flag) {
         console.log(flag);
         $("#listadoregistros").hide();
-        $("#formularioregistrosDetalleLetras").show();
-        $("#btnGuardarLetraPago").prop("disabled", false);
+        $("#formularioregistrosPagoCheque").show();
+        $("#btnGuardarPagoCheque").prop("disabled", false);
         $("#btnagregar").hide();
     }
     else {
         console.log(flag);
         $("#listadoregistros").show();
-        $("#formularioregistrosDetalleLetras").hide();
+        $("#formularioregistrosPagoCheque").hide();
         $("#btnagregar").show();
     }
 }
 
-function limpiar_LetrasBco() {
-    $("#id").val("");
-    $("#idLetraDetalle").val("");
-    $("#montoidLetra").val("");
+function limpiar_PagoCheque() {
+    $("#idCheq").val("");
+    $("#idPagoCheque").val("");
+    $("#montoidCheque").val("");
     $("#nombreDetalle").val("");
-    $("#numerorPago").val("");
+    $("#numeroPago").val("");
     $("#fechapago").val("");
-    $("#fecharenovacion").val("");
-    $("#fechavencimiento").val("");
-    $("#fechaprotesto").val("");
-    $("#comisionprotesto").val("");
     $("#montopagoDetalle").val("");
 }
 
 //Función cancelarform
-function cancelarform_LetraPago() {
-    mostrarform_LetrasBco(false);
+function cancelarform_PagoCheque() {
+    mostrarform_PagoCheque(false);
 }
 
 //Función para guardar o editar
-function guardaryeditar_Amortizacion(e) {
+function guardaryeditar_PagoCheque(e) {
     e.preventDefault(); //No se activará la acción predeterminada del evento
 
-    if (parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#montopendienteamortizacionDetalle").val())) {
+    console.log(parseFloat($("#montopagoDetalle").val()));
+    console.log(parseFloat($("#pagopendiente").val()));
+    if (parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#pagopendiente").val())) {
 
-        $("#btnGuardarLetraBanco").prop("disabled", true);
-        var formData = new FormData($("#formularioLetraBanco")[0]);
+        $("#btnGuardarPagoCheque").prop("disabled", true);
+        var formData = new FormData($("#formularioPagoCheque")[0]);
 
         $.ajax({
-            url: "../ajax/pagoAmortizacion.php?op=guardaryeditar",
+            url: "../ajax/pagoCheque.php?op=guardaryeditar",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             success: function (datos) {
                 bootbox.alert(datos);
+                $("#montopagoDetalle").val()
                 //mostrarform(false);
                 //tabla.ajax.reload();
+                $("#idcheque").val($("#idCheque").val());
+                console.log($("#idcheque").val());
             }
         });
 
         var formData2 = new FormData($("#formulario")[0]);
-        if (parseFloat($("#montopagoDetalle").val()) == parseFloat($("#montopendienteamortizacionDetalle").val())) {
+        if (parseFloat($("#montopagoDetalle").val()) == parseFloat($("#pagopendiente").val())) {
             console.log('aqui igualdad');
+            
+
             $.ajax({
-                url: "../ajax/amortizacion.php?op=actualizarEstado",
+                url: "../ajax/cheques.php?op=actualizarEstado",
                 type: "POST",
                 //data: {idamortizacion : idamortizacion},
                 data: formData2,
@@ -248,6 +229,7 @@ function guardaryeditar_Amortizacion(e) {
                 processData: false,
                 success: function (datos) {
                     console.log(datos);
+                    $("#idcheque").val('');
                     /*
                     bootbox.alert(datos);
                     mostrarform(false);
@@ -257,33 +239,72 @@ function guardaryeditar_Amortizacion(e) {
             });
 
         }
-        mostrarform_PagoAmortizacion(false);
+        mostrarform_PagoCheque(false);
         tabla.ajax.reload();
-        limpiar_PagoAmortizacion();
+        limpiar_PagoCheque();
     } else {
         alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");
     }
 }
 
-function obtenerPendientePagoAmortizacion(idamortizacionDetalle) {
+function obtenerPendientePagosCheque(idCheque) {
 
-    //alert(idamortizacionDetalle);
     $.ajax({
-        url: "../ajax/pagoAmortizacion.php?op=obtenerPendientePagoAmortizacion",
+        url: "../ajax/pagoCheque.php?op=obtenerPendientePagosCheque",
         type: "POST",
-        data: { idamortizacionDetalle: idamortizacionDetalle },
+        data: { idCheque: idCheque },
         beforeSend: function () {
             console.log('data');
             //console.log(data);
         },
-        success: function (datos) {
-            console.log(datos);
-            data = JSON.parse(datos);
+        success: function (data) {
             console.log(data);
-            $("#montopendienteamortizacionDetalle").val(data.total_pago);
+            data = JSON.parse(data);
+            console.log(data);
+            $("#pagorealizado").val(data.pagorealizado);
+            $("#pagopendiente").val(data.pagopendiente);
+
+            console.log($("#pagorealizado").val());
+            console.log($("#pagopendiente").val());
+
         }
     });
 }
+
+//Función Listar
+function listar_PagoCheque(id) {
+    try {
+        //adddlert("Welcome guest!");
+        tabla2 = $('#tbllistadoPagoCheque').dataTable(
+            {
+                "aProcessing": true,//Activamos el procesamiento del datatables
+                "aServerSide": true,//Paginación y filtrado realizados por el servidor
+                "searching": false,
+                "bPaginate": false,
+                "paging": false,
+                "info": false,
+                dom: 'Bfrtip',//Definimos los elementos del control de tabla                
+                buttons: [],
+                "ajax":
+                {
+                    url: '../ajax/pagoCheque.php?op=listar&id=' + id,
+                    type: "get",
+                    dataType: "json",
+                    error: function (e) {
+                        console.log(e.responseText);
+                    }
+                },
+                "bDestroy": true,
+                "iDisplayLength": 5,//Paginación
+                "order": [[0, "asc"]]//Ordenar (columna,orden)
+            }).DataTable();
+        //
+    }
+    catch (err) {
+        console.log(err.message);
+    }
+}
+
 
 
 
