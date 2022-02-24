@@ -103,7 +103,7 @@ function listar() {
             },
             "bDestroy": true,
             "iDisplayLength": 5,//Paginación
-            "order": [[0, "desc"]]//Ordenar (columna,orden)
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
         }).DataTable();
 }
 
@@ -179,6 +179,7 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
         $("#EiquetaPago").html('Total Pago');
         $("#montoidLetra").val(monto);
         $("#montopagoDetalle").val(monto);
+        $("#montopagoDetalle").prop('disabled', true);
         $("#tipoLetraDetalle").val(tipoLetra);
         $("#nombreDetalle").val(idcliente);
         $("#nombreDetalle").selectpicker('refresh');
@@ -192,6 +193,7 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
         $("#EiquetaPago").show();
         //$("#montopagoDetalle").show();
         $("#montopagoDetalle").css("display", "block");
+        $("#montopagoDetalle").prop('disabled', false);
         $("#EiquetaPago").html('Total Renovacion');
         $("#montoidLetra").val(monto);
         $("#tipoLetraDetalle").val(tipoLetra);
@@ -323,8 +325,12 @@ function guardaryeditar_DetalleLetras(e) {
             }
         });
 
+        console.log($("#montopagoDetalle").val());
+        console.log($("#totalRenovacion").val());
+        console.log($("#tipoLetraDetalle").val());
+
         // GRB DETALLE-LETRA
-        if ((parseFloat($("#montopagoDetalle").val()) >= parseFloat($("#totalRenovacion").val())) && $("#tipoLetraDetalle").val() == '2') {
+        if ((parseFloat($("#montopagoDetalle").val()) <= parseFloat($("#totalRenovacion").val())) && $("#tipoLetraDetalle").val() == '2') {
             //if (parseFloat($("#montoidLetra").val()) >= (parseFloat($("#montopagoDetalle").val()) + parseFloat($("#totalRenovacion").val())) && $("#tipoLetraDetalle").val() == '2') {
             $("#btnGuardarLetraPago").prop("disabled", true);
             var formData = new FormData($("#formularioDetalleLetras")[0]);

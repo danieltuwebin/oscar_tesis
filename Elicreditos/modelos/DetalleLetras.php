@@ -80,6 +80,7 @@ class DetalleLetras
         ,IF(tipoDetalleLetra = 2, 'RENOVACION'
         ,IF(tipoDetalleLetra = 3, 'PROTESTO',''))) AS tipopagoletra
         , tipo1_numeroPago
+        , tipo1_FechaPago
         , tipo2_FechaRenovacion
         ,tipo2_FechaVencimiento
         ,tipo3_FechaProtesto

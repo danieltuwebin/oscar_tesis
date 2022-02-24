@@ -17,13 +17,11 @@ function init() {
 
     $.post("../ajax/persona.php?op=SelectPersona", function (r) {
         $("#id_cliente").html(r);
-        console.log(r);
         $('#id_cliente').selectpicker('refresh');
     });
 
     $.post("../ajax/tipoDocumento.php?op=SelectTipoDocumento", function (r) {
         $("#documento").html(r);
-        console.log(r);
         $('#documento').selectpicker('refresh');
     });
 
@@ -46,7 +44,6 @@ function limpiar() {
 function mostrarform(flag) {
     limpiar();
     if (flag) {
-        console.log(flag);
         $("#listadoregistros").hide();
         $("#formularioregistros").show();
         $("#btnGuardar").prop("disabled", false);
@@ -59,7 +56,6 @@ function mostrarform(flag) {
         $("#divListadoPagoAmortizacion").hide();
     }
     else {
-        console.log(flag);
         $("#listadoregistros").show();
         $("#formularioregistros").hide();
         $("#btnagregar").show();
@@ -102,7 +98,7 @@ function listar() {
             },
             "bDestroy": true,
             "iDisplayLength": 5,//Paginación
-            "order": [[0, "desc"]]//Ordenar (columna,orden)
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
         }).DataTable();
 }
 
@@ -133,7 +129,6 @@ function mostrar(idamortizacion) {
     $.post("../ajax/amortizacion.php?op=mostrar", { idamortizacion: idamortizacion }, function (data, status) {
         data = JSON.parse(data);
         mostrarform(true);
-        console.log('--- ' + data);
         $("#id_cliente").val(data.idcliente);
         $("#id_cliente").selectpicker('refresh');
         $("#documento").val(data.tipo_doc);
@@ -170,14 +165,12 @@ function amortizar(idamortizacion, nombreCliente) {
 function mostrarform_PagoAmortizacion(flag) {
     limpiar_PagoAmortizacion();
     if (flag) {
-        console.log(flag);
         $("#listadoregistros").hide();
         $("#formularioregistrosAmortizaciones").show();
         $("#btnGuardarPagoAmortizacion").prop("disabled", false);
         $("#btnagregar").hide();
     }
     else {
-        console.log(flag);
         $("#listadoregistros").show();
         $("#formularioregistrosAmortizaciones").hide();
         $("#btnagregar").show();
@@ -224,7 +217,7 @@ function guardaryeditar_Amortizacion(e) {
 
         var formData2 = new FormData($("#formulario")[0]);
         if (parseFloat($("#montopagoDetalle").val()) == parseFloat($("#montopendienteamortizacionDetalle").val())) {
-            console.log('aqui igualdad');
+
             $.ajax({
                 url: "../ajax/amortizacion.php?op=actualizarEstado",
                 type: "POST",
@@ -247,7 +240,8 @@ function guardaryeditar_Amortizacion(e) {
         tabla.ajax.reload();
         limpiar_PagoAmortizacion();
     } else {
-        alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");
+        $("#montopagoDetalle").focus();
+        alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");        
     }
 }
 
@@ -259,14 +253,13 @@ function obtenerPendientePagoAmortizacion(idamortizacionDetalle) {
         type: "POST",
         data: { idamortizacionDetalle: idamortizacionDetalle },
         beforeSend: function () {
-            console.log('data');
+
             //console.log(data);
         },
         success: function (datos) {
-            console.log(datos);
             data = JSON.parse(datos);
-            console.log(data);
             $("#montopendienteamortizacionDetalle").val(data.total_pago);
+            $("#totaldeudaPendienteA").val(data.total_pago);
         }
     });
 }
@@ -297,7 +290,7 @@ function listar_PagoAmortizacion(id) {
                 },
                 "bDestroy": true,
                 "iDisplayLength": 5,//Paginación
-                "order": [[0, "asc"]]//Ordenar (columna,orden)
+                "order": [[0, "desc"]]//Ordenar (columna,orden)
             }).DataTable();
         //
     }

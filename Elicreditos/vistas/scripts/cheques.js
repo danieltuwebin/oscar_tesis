@@ -95,7 +95,7 @@ function listar() {
             },
             "bDestroy": true,
             "iDisplayLength": 5,//Paginación
-            "order": [[0, "desc"]]//Ordenar (columna,orden)
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
         }).DataTable();
 }
 
@@ -205,9 +205,10 @@ function guardaryeditar_PagoCheque(e) {
             data: formData,
             contentType: false,
             processData: false,
+            async: false,
             success: function (datos) {
                 bootbox.alert(datos);
-                $("#montopagoDetalle").val()
+                //$("#montopagoDetalle").val()
                 //mostrarform(false);
                 //tabla.ajax.reload();
                 $("#idcheque").val($("#idCheque").val());
@@ -216,9 +217,15 @@ function guardaryeditar_PagoCheque(e) {
         });
 
         var formData2 = new FormData($("#formulario")[0]);
+        console.log(formData2);
         if (parseFloat($("#montopagoDetalle").val()) == parseFloat($("#pagopendiente").val())) {
             console.log('aqui igualdad');
-            
+
+            // Build the data object.
+            const data = {};
+            formData2.forEach((value, key) => (data[key] = value));
+            // Log the data.
+            console.log(data);
 
             $.ajax({
                 url: "../ajax/cheques.php?op=actualizarEstado",
@@ -266,6 +273,7 @@ function obtenerPendientePagosCheque(idCheque) {
 
             console.log($("#pagorealizado").val());
             console.log($("#pagopendiente").val());
+            $("#deudapendiente").val(data.pagopendiente);
 
         }
     });

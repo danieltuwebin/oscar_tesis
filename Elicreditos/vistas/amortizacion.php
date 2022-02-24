@@ -113,7 +113,7 @@ if (!isset($_SESSION["nombre"])) {
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <label id="lbltotaldeudaPendiente">Total Deuda Pendiente:</label>
-                    <input type="text" class="form-control" name="totaldeudaPendiente" id="totaldeudaPendiente" maxlength="70" placeholder="0.00">
+                    <input type="text" class="form-control" name="totaldeudaPendiente" id="totaldeudaPendiente" readonly>
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
@@ -181,6 +181,11 @@ if (!isset($_SESSION["nombre"])) {
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <label>Monto Pago(*):</label>
                     <input type="text" class="form-control" name="montopagoDetalle" id="montopagoDetalle">
+                  </div>
+
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label id="lbltotaldeudaPendiente">Deuda Pendiente:</label>
+                    <input type="text" class="form-control" name="totaldeudaPendienteA" id="totaldeudaPendienteA" readonly>
                   </div>
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">

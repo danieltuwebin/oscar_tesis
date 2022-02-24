@@ -200,7 +200,12 @@ if (!isset($_SESSION["nombre"])) {
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <label id="EiquetaPago">Total Pago(*):</label>
                     <input type="text" class="form-control" name="montopagoDetalle" id="montopagoDetalle">
-                  </div>                  
+                  </div>
+
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label id="EiquetaPago">Deuda Pendiente:</label>
+                    <input type="text" class="form-control" name="deudapendiente" id="deudapendiente" readonly>
+                  </div>               
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardarPagoCheque"><i class="fa fa-save"></i> Guardar</button>

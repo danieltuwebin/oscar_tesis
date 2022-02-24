@@ -16,7 +16,8 @@ class PagoAmortizacion
         $numerooperacionDetalle,
         $descripcionDetalle,
         $fechapagoDetalle,
-        $montopagoDetalle
+        $montopagoDetalle,
+        $fechagrabacion
     ) {
         $sql = "INSERT INTO pago_amortiz(idpago_amort
                             , idamortizacion
@@ -24,7 +25,8 @@ class PagoAmortizacion
                             , nump_op
                             , descrip
                             , fecha_pago
-                            , total_pago) 
+                            , total_pago
+                            , fechagrabacion) 
                             VALUES (
                             null
                             ,'$idamortizacionDetalle'
@@ -33,6 +35,7 @@ class PagoAmortizacion
                             ,'$descripcionDetalle'
                             ,'$fechapagoDetalle'
                             ,'$montopagoDetalle'
+                            ,'$fechagrabacion'
                             )";
         return ejecutarConsulta($sql);
         //return $sql;

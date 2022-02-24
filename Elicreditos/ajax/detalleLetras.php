@@ -18,48 +18,13 @@ $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fe
 $fechaprotesto = isset($_POST["fechaprotesto"]) ? limpiarCadena($_POST["fechaprotesto"]) : "";
 $comisionprotesto = isset($_POST["comisionprotesto"]) ? limpiarCadena(strtoupper($_POST["comisionprotesto"])) : "";
 $montopagoDetalle = isset($_POST["montopagoDetalle"]) ? limpiarCadena($_POST["montopagoDetalle"]) : "";
+
+// Para Fecha
+$date = date('Y-m-d H:i:s');
+$newDate = strtotime('-2 hour', strtotime($date));
 $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 
 switch ($_GET["op"]) {
-
-	/*case 'listar':
-		$rspta = $letras->listar();
-		//declaramos un array
-		$data = array();
-
-		while ($reg = $rspta->fetch_object()) {
-			$data[] = array(
-				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra . ',1' . ')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2' . ')"><i class="fa fa-pencil"></i></button>'
-					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3' . ')"><i class="fa fa-pencil"></i></button>'
-					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
-				//"0" => $reg->idamortizacion,
-				"1" => $reg->idletra,
-				"2" => $reg->nombre,
-				"3" => $reg->tipo_letra,
-				"4" => $reg->num_letra,
-				"5" => $reg->num_factura,
-				"6" => $reg->lugar_giro,
-				"7" => $reg->fecha_emi,
-				"8" => $reg->fecha_ven,
-				"9" => $reg->num_unico,
-				"10" => $reg->moneda,
-				"11" => $reg->total,
-				"12" => ($reg->condicion == 1) ? '<span class="label bg-red">Pendiente</span>' : '<span class="label bg-green">Pagado</span>'
-			);
-		}
-
-		$results = array(
-			"sEcho" => 1, //info para datatables
-			"iTotalRecords" => count($data), //enviamos el total de registros al datatable
-			"iTotalDisplayRecords" => count($data), //enviamos el total de registros a visualizar
-			"aaData" => $data
-		);
-		echo json_encode($results);
-
-		break;
-	*/
 
 	case 'listar':
 		//die('123');
@@ -73,7 +38,7 @@ switch ($_GET["op"]) {
 				"0" => $reg->idDetalleLetra,
 				"1" => $reg->tipopagoletra,
 				"2" => $reg->tipo1_numeroPago,
-				"3" => $reg->tipo1_Fechapago,
+				"3" => $reg->tipo1_FechaPago,
 				"4" => $reg->tipo2_FechaRenovacion,
 				"5" => $reg->tipo2_FechaVencimiento,
 				"6" => $reg->tipo3_FechaProtesto,

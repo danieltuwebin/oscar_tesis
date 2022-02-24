@@ -12,6 +12,10 @@ $numerooperacionDetalle = isset($_POST["numerooperacionDetalle"]) ? limpiarCaden
 $descripcionDetalle = isset($_POST["descripcionDetalle"]) ? limpiarCadena(strtoupper($_POST["descripcionDetalle"])) : "";
 $fechapagoDetalle = isset($_POST["fechapagoDetalle"]) ? limpiarCadena($_POST["fechapagoDetalle"]) : "";
 $montopagoDetalle = isset($_POST["montopagoDetalle"]) ? limpiarCadena($_POST["montopagoDetalle"]) : "";
+
+// Para Fecha
+$date = date('Y-m-d H:i:s');
+$newDate = strtotime('-2 hour', strtotime($date));
 $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 
 switch ($_GET["op"]) {

@@ -15,6 +15,10 @@ $fechaemision = isset($_POST["fechaemision"]) ? limpiarCadena($_POST["fechaemisi
 $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fechavencimiento"]) : "";
 $tipoMoneda = isset($_POST["tipoMoneda"]) ? limpiarCadena($_POST["tipoMoneda"]) : "";
 $totaldeuda = isset($_POST["totaldeuda"]) ? limpiarCadena($_POST["totaldeuda"]) : "";
+
+// Para Fecha
+$date = date('Y-m-d H:i:s');
+$newDate = strtotime('-2 hour', strtotime($date));
 $fechagrabacion = date('Y-m-d H:i:s', $newDate);
 
 switch ($_GET["op"]) {
