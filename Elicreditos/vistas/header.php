@@ -18,7 +18,7 @@ if (strlen(session_id()) < 1)
   <!-- Theme style -->
   <link rel="stylesheet" href="../public/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
+  folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../public/css/_all-skins.min.css">
   <link rel="apple-touch-icon" href="../public/img/apple-touch-icon.png">
   <link rel="shortcut icon" href="../public/img/favicon.ico">
@@ -34,7 +34,6 @@ if (strlen(session_id()) < 1)
 
 <body class="hold-transition skin-blue-light sidebar-mini">
   <div class="wrapper">
-
     <header class="main-header bg-blue">
 
       <!-- Logo -->
@@ -74,11 +73,11 @@ if (strlen(session_id()) < 1)
 
                 <!-- Menu Footer-->
                 <li class="user-footer bg-aqua">
-
                   <div class="pull-ri3ght ">
                     <a href="../ajax/usuario.php?op=salir" class="btn btn-default btn-flat bg-red">Cerrar Cesión</a>
                   </div>
                 </li>
+
               </ul>
             </li>
           </ul>
@@ -105,7 +104,7 @@ if (strlen(session_id()) < 1)
           ?>
 
           <?php
-          if ($_SESSION['ventas'] == 1) {
+          if ($_SESSION['Cuentas'] == 1) {
             echo '<li class="treeview">
               <a href="#">
                 <i class="fa fa-money"></i>
@@ -124,26 +123,26 @@ if (strlen(session_id()) < 1)
           ?>
 
           <?php
-          if ($_SESSION['ventas'] == 1) {
+          if ($_SESSION['Consultas'] == 1) {
             echo '<li class="treeview">
               <a href="#">
-                <i class="fa fa-question"></i>
+                <i class="fa fa-file-text-o"></i>
                 <span> Consultas de Cobranza </span>
-                <span class="label label-primary pull-right bg-green"><i class="fa fa-question"></i></i></span>
+                <span class="label label-primary pull-right bg-green"><i class="fa fa-file-text-o"></i></i></span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="cliente.php"><i class="fa fa-plus-circle"></i> Clientes</a></li>
-                <li><a href="amortizacion.php"><i class="fa fa-plus-circle"></i> Cobro de Amortizaciones</a></li>
-                <li><a href="letrasbco.php"><i class="fa fa-plus-circle"></i> Letras Al Banco</a></li>
-                <li><a href="letrascartera.php"><i class="fa fa-plus-circle"></i> Letras en Cartera </a></li>
-                <li><a href="cheques.php"><i class="fa fa-plus-circle"></i>Cheques</a></li>
+                
+                <li><a href="amortizacionConsulta.php"><i class="fa fa-plus-circle"></i> Cobro de Amortizaciones</a></li>
+                <li><a href="letrasbcoConsulta.php"><i class="fa fa-plus-circle"></i> Letras Al Banco</a></li>
+                <li><a href="letrascarteraConsulta.php"><i class="fa fa-plus-circle"></i> Letras en Cartera </a></li>
+                <li><a href="chequesConsulta.php"><i class="fa fa-plus-circle"></i>Cheques</a></li>
               </ul>
             </li>';
           }
           ?>
 
           <?php
-          if ($_SESSION['acceso'] == 1) {
+          if ($_SESSION['Acceso'] == 1) {
             echo '<li class="treeview">
               <a href="#">
                 <i class="fa fa-key"></i> 

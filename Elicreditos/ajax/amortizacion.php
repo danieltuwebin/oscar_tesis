@@ -15,6 +15,7 @@ $fechaemision = isset($_POST["fechaemision"]) ? limpiarCadena($_POST["fechaemisi
 $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fechavencimiento"]) : "";
 $tipoMoneda = isset($_POST["tipoMoneda"]) ? limpiarCadena($_POST["tipoMoneda"]) : "";
 $totaldeuda = isset($_POST["totaldeuda"]) ? limpiarCadena($_POST["totaldeuda"]) : "";
+$tipovista = isset($_POST["tipovista"]) ? limpiarCadena($_POST["tipovista"]) : "";
 
 // Para Fecha
 $date = date('Y-m-d H:i:s');
@@ -31,7 +32,7 @@ switch ($_GET["op"]) {
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
 				"0" => ($reg->condicion == 1) ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>'
-					. ' ' . '<button class="btn btn-warning btn-xs" onclick="amortizar(' . $reg->idamortizacion .',&apos;'. $reg->nombre .'&apos;)"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button class="btn btn-warning btn-xs" onclick="amortizar(' . $reg->idamortizacion . ',&apos;' . $reg->nombre . '&apos;)"><i class="fa fa-pencil"></i></button>'
 					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>',
 				//"0" => $reg->idamortizacion,
 				"1" => $reg->idamortizacion,
@@ -53,8 +54,38 @@ switch ($_GET["op"]) {
 			"aaData" => $data
 		);
 		echo json_encode($results);
-
 		break;
+
+		case 'listarView':
+			$rspta = $amortizacion->listar();
+			//declaramos un array
+			$data = array();
+	
+			while ($reg = $rspta->fetch_object()) {
+				$data[] = array(
+					"0" => '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idamortizacion . ')"><i class="fa fa-eye"></i></button>',
+					//"0" => $reg->idamortizacion,
+					"1" => $reg->idamortizacion,
+					"2" => $reg->nombre,
+					"3" => $reg->nombre_doc,
+					"4" => $reg->num_doc,
+					"5" => $reg->fecha_emi,
+					"6" => $reg->fecha_ven,
+					"7" => $reg->moneda,
+					"8" => $reg->total,
+					"9" => ($reg->condicion == 1) ? '<span class="label bg-red">Pendiente</span>' : '<span class="label bg-green">Pagado</span>'
+				);
+			}
+	
+			$results = array(
+				"sEcho" => 1, //info para datatables
+				"iTotalRecords" => count($data), //enviamos el total de registros al datatable
+				"iTotalDisplayRecords" => count($data), //enviamos el total de registros a visualizar
+				"aaData" => $data
+			);
+			echo json_encode($results);
+			break;
+	
 
 	case 'guardaryeditar':
 		if (empty($idamortizacion)) {

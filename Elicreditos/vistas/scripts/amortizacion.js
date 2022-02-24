@@ -1,12 +1,23 @@
 var tabla;
 var tabla2;
+var tipovista = "";
 
 //Función que se ejecuta al inicio
 function init() {
     mostrarform(false);
     mostrarform_PagoAmortizacion(false);
-    listar();
 
+    //alert($(location).attr('href'));
+    var link = $(location).attr('href');
+    tipovista = link.substring(link.length - 24, link.length);
+    $("#tipovista").val(tipovista);
+
+    if(tipovista== 'amortizacionConsulta.php'){
+        listarView();
+    }else{
+        listar();
+    }
+    
     $("#formulario").on("submit", function (e) {
         guardaryeditar(e);
     })
@@ -91,6 +102,7 @@ function listar() {
             {
                 url: '../ajax/amortizacion.php?op=listar',
                 type: "get",
+                async: "false",
                 dataType: "json",
                 error: function (e) {
                     console.log(e.responseText);
@@ -101,6 +113,36 @@ function listar() {
             "order": [[1, "desc"]]//Ordenar (columna,orden)
         }).DataTable();
 }
+
+//Función Listar View
+function listarView() {
+    tabla = $('#tbllistado').dataTable(
+        {
+            "aProcessing": true,//Activamos el procesamiento del datatables
+            "aServerSide": true,//Paginación y filtrado realizados por el servidor
+            dom: 'Bfrtip',//Definimos los elementos del control de tabla
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdf'
+            ],
+            "ajax":
+            {
+                url: '../ajax/amortizacion.php?op=listarView',
+                type: "get",
+                async: "false",
+                dataType: "json",
+                error: function (e) {
+                    console.log(e.responseText);
+                }
+            },
+            "bDestroy": true,
+            "iDisplayLength": 5,//Paginación
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
+        }).DataTable();
+}
+
 
 //Función para guardar o editar
 function guardaryeditar(e) {
@@ -241,7 +283,7 @@ function guardaryeditar_Amortizacion(e) {
         limpiar_PagoAmortizacion();
     } else {
         $("#montopagoDetalle").focus();
-        alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");        
+        alert("EL MONTO DE PAGO SUPERA LA DEUDA PENDIENTE");
     }
 }
 

@@ -7,7 +7,7 @@ if (!isset($_SESSION["nombre"])) {
   header("Location: login.html");
 } else {
   require 'header.php';
-  if ($_SESSION['Cuentas'] == 1) {
+  if ($_SESSION['Consultas'] == 1) {
 ?>
 
     <STYLE type="text/css">
@@ -24,7 +24,7 @@ if (!isset($_SESSION["nombre"])) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Letras Cartera&nbsp;
+                <h1 class="box-title">Cheques&nbsp;
                   <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button>
                   <!--<a target="_blank" href="../reportes/rptclientes.php">
                      <button class="btn btn bg-blue"><i class="fa fa-file"></i>Reporte</button>
@@ -39,14 +39,15 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Opciones</th>
                     <th>Id</th>
                     <th>Cliente</th>
-                    <th>Tipo Letra</th>
-                    <th>Numero Letra</th>
-                    <th>Numero Factura</th>
-                    <th>Lugar Giro</th>
+                    <th>Tipo Cheque</th>
+                    <th>Banco</th>
+                    <th>tipo Doc.</th>
+                    <th>Numero Doc.</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
                     <th>Moneda</th>
-                    <th>Total</th>
+                    <th>Monto</th>
+                    <th>Imagen</th>
                     <th>Estado</th>
                   </thead>
                   <tbody>
@@ -55,53 +56,60 @@ if (!isset($_SESSION["nombre"])) {
                     <th>Opciones</th>
                     <th>Id</th>
                     <th>Cliente</th>
-                    <th>Tipo Letra</th>
-                    <th>Numero Letra</th>
-                    <th>Numero Factura</th>
-                    <th>Lugar Giro</th>
+                    <th>Tipo Cheque</th>
+                    <th>Banco</th>
+                    <th>tipo Doc.</th>
+                    <th>Numero Doc.</th>
                     <th>Fec. Emisión</th>
                     <th>Fec. Vencimiento</th>
                     <th>Moneda</th>
-                    <th>Total</th>
+                    <th>Monto</th>
+                    <th>Imagen</th>
                     <th>Estado</th>
                   </tfoot>
                 </table>
               </div>
 
-              <div class="panel-body" style="height: 800px;" id="formularioregistros">
+              <div class="panel-body" style="height: 400px;" id="formularioregistros">
                 <form name="formulario" id="formulario" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <input type="hidden" name="idpersona" id="idpersona">
-                    <input type="hidden" name="idletra" id="idletra">
-                    <input type="hidden" name="totalPagoRealizado" id="totalPagoRealizado">
-                    <input type="hidden" name="totalPagoPendiente" id="totalPagoPendiente">
+                    <input type="hidden" name="idcheque" id="idcheque">
                     <label>Nombre de Cliente(*):</label>
                     <select id="id_cliente" name="id_cliente" class="form-control selectpicker" data-live-search="true" maxlength="100">
                     </select>
                   </div>
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Tipo Letra(*):</label>
-                    <input type="text" class="form-control" name="tipoletra" id="tipoletra" maxlength="20" value="LETRA CARTERA" readonly>
-                  </div>
-
-                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <label>Número Letra:</label>
-                    <input type="text" class="form-control" name="numeroletra" id="numeroletra" maxlength="20">
-                  </div>
-
-                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <label>Número Factura:</label>
-                    <input type="text" class="form-control" name="numerofactura" id="numerofactura" maxlength="20">
+                    <label for="">Tipo Cheque(*):</label>
+                    <select name="tipocheque" id="tipocheque" class="form-control selectpicker">
+                      <option value="">Seleccione Tipo de Cheque</option>
+                      <option value="TIPO 1">TIPO 1</option>
+                      <option value="TIPO 2">TIPO 2</option>
+                    </select>
                   </div>
 
                   <div class="form-group col-lg-6 col-md-6 col-xs-12">
-                    <label for="">Lugar Giro(*):</label>
-                    <select name="lugargiro" id="lugargiro" class="form-control selectpicker">
-                      <option value="">Seleccione lugar giro</option>
-                      <option value="LIMA">LIMA</option>
-                      <option value="PROVINCIA">PROVINCIA</option>
+                    <label for="">Banco(*):</label>
+                    <select name="banco" id="banco" class="form-control selectpicker">
+                      <option value="">Seleccione Banco</option>
+                      <option value="BBVA">BBVA</option>
+                      <option value="BCP">BCP</option>
                     </select>
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-xs-12">
+                    <label for="">Tipo Documento(*):</label>
+                    <select name="tipodocumento" id="tipodocumento" class="form-control selectpicker">
+                      <option value="">Seleccione Tipo Documento</option>
+                      <option value="DOCUMENTO 1">DOCUMENTO 1</option>
+                      <option value="DOCUMENTO 2">DOCUMENTO 2</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Número Documento:</label>
+                    <input type="text" class="form-control" name="numerodocumento" id="numerodocumento" maxlength="20">
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-xs-12">
@@ -124,8 +132,15 @@ if (!isset($_SESSION["nombre"])) {
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Total Letra:</label>
-                    <input type="text" class="form-control" name="totalletra" id="totalletra" maxlength="70">
+                    <label>Monto:</label>
+                    <input type="text" class="form-control" name="monto" id="monto" maxlength="70">
+                  </div>
+
+                  <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Imagen:</label>
+                    <input type="file" class="form-control" name="imagen" id="imagen">
+                    <input type="hidden" name="imagenactual" id="imagenactual">
+                    <img src="" width="150px" height="100px" id="imagenmuestra">
                   </div>
 
                   <div id="divcondicion" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
@@ -133,17 +148,14 @@ if (!isset($_SESSION["nombre"])) {
                     <input type="text" class="form-control" name="condicion" id="condicion" readonly>
                   </div>
 
-                  <div id="divListadoDetalleLetra" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="panel-body table-responsive" id="listadoregistrosDetalleLetra">
-                      <table id="tbllistadoDetalleLetra" class="table table-striped table-bordered table-condensed table-hover">
+                  <div id="divListadoPagoCheque" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel-body table-responsive" id="listadoregistrosPagoCheque">
+                      <table id="tbllistadoPagoCheque" class="table table-striped table-bordered table-condensed table-hover">
                         <thead>
                           <th>Id</th>
-                          <th>Tipo Letra</th>
-                          <th>Nro. Recibo</th>
-                          <th>Nro. Operación</th>
-                          <th>Descripción</th>
-                          <th>F. Pago</th>
-                          <th>Total Pago</th>
+                          <th>Nro. Pago</th>
+                          <th>Fecha pago</th>
+                          <th>Monto</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -151,42 +163,38 @@ if (!isset($_SESSION["nombre"])) {
                     </div>
                   </div>
 
+
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <button class="btn btn-primary" type="submit" id="btnGuardar"><i class="fa fa-save"></i> Guardar</button>
+
                     <button class="btn btn-danger" onclick="cancelarform()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
                   </div>
                 </form>
               </div>
 
               <!-- INICIO FRM DETALLE LETRAS -->
-              <div class="panel-body" style="height: 400px;" id="formularioregistrosDetalleLetras">
-                <form name="formularioDetalleLetras" id="formularioDetalleLetras" method="POST">
+              <div class="panel-body" style="height: 400px;" id="formularioregistrosPagoCheque">
+                <form name="formularioPagoCheque" id="formularioPagoCheque" method="POST">
                   <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <input type="hidden" name="id" id="id">
-                    <input type="hidden" name="idLetraDetalle" id="idLetraDetalle">
-                    <input type="hidden" name="montoidLetra" id="montoidLetra">
+                    <input type="hidden" name="idCheque" id="idCheque">
+                    <input type="hidden" name="idPagoCheque" id="idPagoCheque">
+                    <input type="hidden" name="montoidCheque" id="montoidCheque">
+                    <input type="hidden" name="pagorealizado" id="pagorealizado">
+                    <input type="hidden" name="pagopendiente" id="pagopendiente">
                     <label>Nombre de Cliente:</label>
                     <input type="text" id="nombreDetalle" name="nombreDetalle" class="form-control" readonly>
                   </div>
 
-                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Numero Recibo(*):</label>
-                    <input type="text" id="numeroRecibo" name="numeroRecibo" class="form-control">
-                  </div>
+                  <div id="DivPagoLetra">
+                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                      <label>Numero Pago(*):</label>
+                      <input type="text" id="numeroPago" name="numeroPago" class="form-control">
+                    </div>
 
-                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Numero Operación(*):</label>
-                    <input type="text" id="numeroOperacion" name="numeroOperacion" class="form-control">
-                  </div>
-
-                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Descripción(*):</label>
-                    <input type="text" id="descripcion" name="descripcion" class="form-control">
-                  </div>
-
-                  <div class="form-group col-lg-3 col-md-6 col-xs-12">
-                    <label for="">Fecha Pago(*):</label>
-                    <input class="form-control" type="date" name="fechapago" id="fechapago">
+                    <div class="form-group col-lg-3 col-md-6 col-xs-12">
+                      <label for="">Fecha Pago(*):</label>
+                      <input class="form-control" type="date" name="fechapago" id="fechapago">
+                    </div>
                   </div>
 
                   <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
@@ -194,14 +202,14 @@ if (!isset($_SESSION["nombre"])) {
                     <input type="text" class="form-control" name="montopagoDetalle" id="montopagoDetalle">
                   </div>
 
-                  <div id="divDeudaPendiente" class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <label>Deuda Pendiente:</label>
+                  <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                    <label id="EiquetaPago">Deuda Pendiente:</label>
                     <input type="text" class="form-control" name="deudapendiente" id="deudapendiente" readonly>
-                  </div>                  
+                  </div>               
 
                   <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <button class="btn btn-primary" type="submit" id="btnGuardarLetraPago"><i class="fa fa-save"></i> Guardar</button>
-                    <button class="btn btn-danger" onclick="cancelarform_LetraPago()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
+                    <button class="btn btn-primary" type="submit" id="btnGuardarPagoCheque"><i class="fa fa-save"></i> Guardar</button>
+                    <button class="btn btn-danger" onclick="cancelarform_PagoCheque()" type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar</button>
                   </div>
                 </form>
               </div>
@@ -221,7 +229,7 @@ if (!isset($_SESSION["nombre"])) {
   }
   require 'footer.php';
   ?>
-  <script type="text/javascript" src="scripts/letrascartera.js"></script>
+  <script type="text/javascript" src="scripts/cheques.js"></script>
 
 <?php
 }

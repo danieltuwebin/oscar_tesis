@@ -515,9 +515,8 @@ ALTER TABLE `letras_cartera` CHANGE `condicion` `condicion` TINYINT(1) NOT NULL 
 
 ALTER TABLE `pago_letraCartera` CHANGE `num_recivo` `num_recibo` VARCHAR(20) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL;
 
-
 ALTER TABLE `cheques` ADD `fechagrabacion` DATETIME NOT NULL AFTER `condicion`;
 
-
-
 ALTER TABLE `pago_cheque` ADD `fechagrabacion` DATETIME NOT NULL AFTER `total_pago`;
+
+ALTER TABLE `usuario` ADD `tipousuario` VARCHAR(30) NOT NULL AFTER `clave`;

@@ -7,15 +7,16 @@ require_once "../modelos/Usuario.php";
 $usuario=new Usuario();
 
 $idusuario=isset($_POST["idusuario"])? limpiarCadena($_POST["idusuario"]):"";
-$nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
+$nombre=isset($_POST["nombre"])? limpiarCadena(strtoupper($_POST["nombre"])):"";
 $tipo_documento=isset($_POST["tipo_documento"])? limpiarCadena($_POST["tipo_documento"]):"";
 $num_documento=isset($_POST["num_documento"])? limpiarCadena($_POST["num_documento"]):"";
 $direccion=isset($_POST["direccion"])? limpiarCadena($_POST["direccion"]):"";
 $telefono=isset($_POST["telefono"])? limpiarCadena($_POST["telefono"]):"";
-$email=isset($_POST["email"])? limpiarCadena($_POST["email"]):"";
+$email=isset($_POST["email"])? limpiarCadena(strtoupper($_POST["email"])):"";
 $cargo=isset($_POST["cargo"])? limpiarCadena($_POST["cargo"]):"";
 $login=isset($_POST["login"])? limpiarCadena($_POST["login"]):"";
 $clave=isset($_POST["clave"])? limpiarCadena($_POST["clave"]):"";
+$tipousuario=isset($_POST["tipousuario"])? limpiarCadena(strtoupper($_POST["tipousuario"])):"";
 $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 
 switch ($_GET["op"]){
@@ -38,11 +39,11 @@ switch ($_GET["op"]){
         $clavehash=hash("SHA256",$clave);
  
         if (empty($idusuario)){
-            $rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
+            $rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$imagen,$_POST['permiso']);
             echo $rspta ? "Usuario registrado" : "No se pudieron registrar todos los datos del usuario";
         }
         else {
-            $rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
+            $rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$imagen,$_POST['permiso']);
             echo $rspta ? "Usuario actualizado" : "Usuario no actualizado";
         }
     break;
@@ -138,6 +139,7 @@ switch ($_GET["op"]){
             $_SESSION['nombre']=$fetch->nombre;
             $_SESSION['imagen']=$fetch->imagen;
             $_SESSION['login']=$fetch->login;
+            $_SESSION['tipoUsuario']=$fetch->tipousuario;
             $_SESSION['configuracion']=$fetch->configuracion;
 			
             //Obtenemos los permisos del usuario
@@ -154,15 +156,9 @@ switch ($_GET["op"]){
  
             //Determinamos los accesos del usuario
             in_array(1,$valores)?$_SESSION['escritorio']=1:$_SESSION['escritorio']=0;
-            in_array(2,$valores)?$_SESSION['almacen']=1:$_SESSION['almacen']=0;
-            in_array(3,$valores)?$_SESSION['compras']=1:$_SESSION['compras']=0;
-            in_array(4,$valores)?$_SESSION['ventas']=1:$_SESSION['ventas']=0;
-            in_array(5,$valores)?$_SESSION['acceso']=1:$_SESSION['acceso']=0;
-            in_array(6,$valores)?$_SESSION['consultac']=1:$_SESSION['consultac']=0;
-            in_array(7,$valores)?$_SESSION['consultav']=1:$_SESSION['consultav']=0;
-            in_array(8,$valores)?$_SESSION['produccion']=1:$_SESSION['produccion']=0;
-			in_array(9,$valores)?$_SESSION['configuracion']=1:$_SESSION['configuracion']=0;
- 
+            in_array(2,$valores)?$_SESSION['Cuentas']=1:$_SESSION['Cuentas']=0;
+            in_array(3,$valores)?$_SESSION['Consultas']=1:$_SESSION['Consultas']=0;
+            in_array(4,$valores)?$_SESSION['Acceso']=1:$_SESSION['Acceso']=0;
         }
         //echo json_encode($fetch);
         //echo json_encode($clavehash);
