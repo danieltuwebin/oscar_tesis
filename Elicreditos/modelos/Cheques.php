@@ -11,21 +11,23 @@ class Cheques
 
     public function listar()
     {
+        $id =  $_SESSION['idcliente'];
         $sql = "SELECT idcheques
-        , idcliente
+        , c.idcliente
         , UPPER(p.nombre) as nombre
-        , tipo_cheque
-        , bco_cheque
-        , doc_pago
-        , num_docpago
-        , fecha_emi
-        , fecha_ven
-        , moneda
-        , monto
-        , imagen
-        , condicion
+        , c.tipo_cheque
+        , c.bco_cheque
+        , c.doc_pago
+        , c.num_docpago
+        , c.fecha_emi
+        , c.fecha_ven
+        , c.moneda
+        , c.monto
+        , c.imagen
+        , c.condicion
         FROM cheques c
         LEFT JOIN persona p ON c.idcliente = p.idpersona";
+        if($_SESSION['tipoUsuario']=="CLIENTE") $sql .= " WHERE c.idcliente = '$id' ";
         return ejecutarConsulta($sql);
     }
 

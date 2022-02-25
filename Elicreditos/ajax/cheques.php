@@ -62,6 +62,40 @@ switch ($_GET["op"]) {
 
 		break;
 
+		case 'listarView':
+			$rspta = $cheques->listar();
+			//declaramos un array
+			$data = array();
+	
+			while ($reg = $rspta->fetch_object()) {
+				$data[] = array(
+					"0" => '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idcheques . ')"><i class="fa fa-eye"></i></button>',
+					//"0" => $reg->idamortizacion,
+					"1" => $reg->idcheques,
+					"2" => $reg->nombre,
+					"3" => $reg->tipo_cheque,
+					"4" => $reg->bco_cheque,
+					"5" => $reg->doc_pago,
+					"6" => $reg->num_docpago,
+					"7" => $reg->fecha_emi,
+					"8" => $reg->fecha_ven,
+					"9" => $reg->moneda,
+					"10" => $reg->monto,
+					"11" => '<a href="../files/cheques/'.$reg->imagen.'" target="_blank">Visualizar</a>',
+					"12" => ($reg->condicion == 1) ? '<span class="label bg-red">Pendiente</span>' : '<span class="label bg-green">Pagado</span>'
+				);
+			}
+	
+			$results = array(
+				"sEcho" => 1, //info para datatables
+				"iTotalRecords" => count($data), //enviamos el total de registros al datatable
+				"iTotalDisplayRecords" => count($data), //enviamos el total de registros a visualizar
+				"aaData" => $data
+			);
+			echo json_encode($results);
+	
+			break;		
+
 	case 'guardaryeditar':
 		 
         if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name']))

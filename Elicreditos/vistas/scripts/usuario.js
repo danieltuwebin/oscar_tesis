@@ -14,6 +14,11 @@ function init() {
     $.post("../ajax/usuario.php?op=permisos&id=", function (r) {
         $("#permisos").html(r);
     });
+
+    $.post("../ajax/persona.php?op=SelectPersona", function (r) {
+        $("#id_cliente").html(r);
+        $('#id_cliente').selectpicker('refresh');
+    });
 }
 
 //Función limpiar
@@ -30,6 +35,7 @@ function limpiar() {
     $("#imagenmuestra").attr("src", "");
     $("#imagenactual").val("");
     $("#idusuario").val("");
+    $("#id_cliente").val("");
 }
 
 //Función mostrar formulario
@@ -125,6 +131,8 @@ function mostrar(idusuario) {
         $("#imagenmuestra").attr("src", "../files/usuarios/" + data.imagen);
         $("#imagenactual").val(data.imagen);
         $("#idusuario").val(data.idusuario);
+        $("#id_cliente").val(data.idcliente);
+        $("#id_cliente").selectpicker('refresh');
 
     });
     $.post("../ajax/usuario.php?op=permisos&id=" + idusuario, function (r) {

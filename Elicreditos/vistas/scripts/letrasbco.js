@@ -2,13 +2,23 @@ var tabla;
 var tabla2;
 var valorRespuesta = "";
 var idLetraActualizaNU = "";
+var tipovista = "";
 
 //Función que se ejecuta al inicio
 function init() {
 
     mostrarform(false);
     mostrarform_LetrasBco(false);
-    listar();
+
+    var link = $(location).attr('href');
+    tipovista = link.substring(link.length - 21, link.length);
+    $("#tipovista").val(tipovista);
+
+    if(tipovista== 'letrasbcoConsulta.php'){
+        listarView();
+    }else{
+        listar();
+    }
 
     $("#formulario").on("submit", function (e) {
         guardaryeditar(e);
@@ -95,6 +105,34 @@ function listar() {
             "ajax":
             {
                 url: '../ajax/letras.php?op=listar',
+                type: "get",
+                dataType: "json",
+                error: function (e) {
+                    console.log(e.responseText);
+                }
+            },
+            "bDestroy": true,
+            "iDisplayLength": 5,//Paginación
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
+        }).DataTable();
+}
+
+//Función Listar View
+function listarView() {
+    tabla = $('#tbllistado').dataTable(
+        {
+            "aProcessing": true,//Activamos el procesamiento del datatables
+            "aServerSide": true,//Paginación y filtrado realizados por el servidor
+            dom: 'Bfrtip',//Definimos los elementos del control de tabla
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdf'
+            ],
+            "ajax":
+            {
+                url: '../ajax/letras.php?op=listarView',
                 type: "get",
                 dataType: "json",
                 error: function (e) {

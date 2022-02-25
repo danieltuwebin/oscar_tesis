@@ -18,6 +18,7 @@ $login=isset($_POST["login"])? limpiarCadena($_POST["login"]):"";
 $clave=isset($_POST["clave"])? limpiarCadena($_POST["clave"]):"";
 $tipousuario=isset($_POST["tipousuario"])? limpiarCadena(strtoupper($_POST["tipousuario"])):"";
 $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
+$id_cliente=isset($_POST["id_cliente"])? limpiarCadena($_POST["id_cliente"]):"";
 
 switch ($_GET["op"]){
     case 'guardaryeditar':
@@ -39,11 +40,11 @@ switch ($_GET["op"]){
         $clavehash=hash("SHA256",$clave);
  
         if (empty($idusuario)){
-            $rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$imagen,$_POST['permiso']);
+            $rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$id_cliente,$imagen,$_POST['permiso']);
             echo $rspta ? "Usuario registrado" : "No se pudieron registrar todos los datos del usuario";
         }
         else {
-            $rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$imagen,$_POST['permiso']);
+            $rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$tipousuario,$id_cliente,$imagen,$_POST['permiso']);
             echo $rspta ? "Usuario actualizado" : "Usuario no actualizado";
         }
     break;
@@ -140,8 +141,9 @@ switch ($_GET["op"]){
             $_SESSION['imagen']=$fetch->imagen;
             $_SESSION['login']=$fetch->login;
             $_SESSION['tipoUsuario']=$fetch->tipousuario;
+            $_SESSION['idcliente']=$fetch->idcliente;
             $_SESSION['configuracion']=$fetch->configuracion;
-			
+
             //Obtenemos los permisos del usuario
             $marcados = $usuario->listarmarcados($fetch->idusuario);
  

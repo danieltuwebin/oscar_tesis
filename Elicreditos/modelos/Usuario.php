@@ -12,10 +12,10 @@ Class Usuario
     }
  
     //Implementamos un método para insertar registros
-    public function insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clave,$tipousuario,$imagen,$permisos)
+    public function insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clave,$tipousuario,$id_cliente,$imagen,$permisos)
     {
-        $sql="INSERT INTO usuario (nombre,tipo_documento,num_documento,direccion,telefono,email,cargo,login,clave,tipousuario,imagen,condicion)
-        VALUES ('$nombre','$tipo_documento','$num_documento','$direccion','$telefono','$email','$cargo','$login','$clave','$tipousuario','$imagen','1')";
+        $sql="INSERT INTO usuario (nombre,tipo_documento,num_documento,direccion,telefono,email,cargo,login,clave,tipousuario,idcliente,imagen,condicion)
+        VALUES ('$nombre','$tipo_documento','$num_documento','$direccion','$telefono','$email','$cargo','$login','$clave','$tipousuario','$id_cliente','$imagen','1')";
         //return ejecutarConsulta($sql);
         $idusuarionew=ejecutarConsulta_retornarID($sql);
  
@@ -33,9 +33,9 @@ Class Usuario
     }
  
     //Implementamos un método para editar registros
-    public function editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clave,$imagen,$permisos)
+    public function editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clave,$tipousuario,$id_cliente,$imagen,$permisos)
     {
-        $sql="UPDATE usuario SET nombre='$nombre',tipo_documento='$tipo_documento',num_documento='$num_documento',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',login='$login',clave='$clave',imagen='$imagen' WHERE idusuario='$idusuario'";
+        $sql="UPDATE usuario SET nombre='$nombre',tipo_documento='$tipo_documento',num_documento='$num_documento',direccion='$direccion',telefono='$telefono',email='$email',cargo='$cargo',login='$login',clave='$clave',tipousuario='$tipousuario',idcliente='$id_cliente',imagen='$imagen' WHERE idusuario='$idusuario'";
         ejecutarConsulta($sql);
  
         //Eliminamos todos los permisos asignados para volverlos a registrar
@@ -93,7 +93,7 @@ Class Usuario
     //Función para verificar el acceso al sistema
     public function verificar($login,$clave)
     {
-        $sql="SELECT idusuario,nombre,tipo_documento,num_documento,telefono,email,cargo,imagen,login FROM usuario WHERE login='$login' AND clave='$clave' AND condicion='1'"; 
+        $sql="SELECT idusuario, nombre, tipo_documento, num_documento, direccion, telefono, email, cargo, login, clave, tipousuario, idcliente, imagen, condicion FROM usuario WHERE login='$login' AND clave='$clave' AND condicion='1'"; 
         return ejecutarConsulta($sql);  
     }
 }

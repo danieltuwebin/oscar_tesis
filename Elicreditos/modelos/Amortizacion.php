@@ -11,6 +11,7 @@ class Amortizacion
 
     public function listar()
     {
+        $id =  $_SESSION['idcliente'];
         $sql = "SELECT a.idamortizacion
         , a.idcliente
         , UPPER(p.nombre) as nombre
@@ -26,6 +27,7 @@ class Amortizacion
         FROM amortizacion a 
         LEFT JOIN persona p ON a.idcliente = p.idpersona 
         LEFT JOIN tipoDocumento t ON a.tipo_doc = t.id";
+        if($_SESSION['tipoUsuario']=="CLIENTE") $sql .= " WHERE a.idcliente = '$id' ";
         return ejecutarConsulta($sql);
     }
 

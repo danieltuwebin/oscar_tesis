@@ -24,8 +24,8 @@ if (!isset($_SESSION["nombre"])) {
           <div class="col-md-12">
             <div class="box">
               <div class="box-header with-border">
-                <h1 class="box-title">Letras Banco&nbsp;
-                  <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button>
+                <h1 class="box-title">Consulta Letras Banco&nbsp;
+                  <!--<button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button>-->
                   <!--<a target="_blank" href="../reportes/rptclientes.php">
                      <button class="btn btn bg-blue"><i class="fa fa-file"></i>Reporte</button>
                     </a>-->

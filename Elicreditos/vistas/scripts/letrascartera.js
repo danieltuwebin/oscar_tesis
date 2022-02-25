@@ -6,7 +6,16 @@ function init() {
 
     mostrarform(false);
     mostrarform_LetrasCartera(false);
-    listar();
+
+    var link = $(location).attr('href');
+    tipovista = link.substring(link.length - 25, link.length);
+    $("#tipovista").val(tipovista);
+
+    if (tipovista == 'letrascarteraConsulta.php') {
+        listarView();
+    } else {
+        listar();
+    }
 
     $("#formulario").on("submit", function (e) {
         guardaryeditar(e);
@@ -84,6 +93,35 @@ function listar() {
             "ajax":
             {
                 url: '../ajax/letrasCartera.php?op=listar',
+                type: "get",
+                dataType: "json",
+                error: function (e) {
+                    console.log(e.responseText);
+                }
+            },
+            "bDestroy": true,
+            "iDisplayLength": 5,//Paginación
+            "order": [[1, "desc"]]//Ordenar (columna,orden)
+        }).DataTable();
+}
+
+
+//Función ListarView
+function listarView() {
+    tabla = $('#tbllistado').dataTable(
+        {
+            "aProcessing": true,//Activamos el procesamiento del datatables
+            "aServerSide": true,//Paginación y filtrado realizados por el servidor
+            dom: 'Bfrtip',//Definimos los elementos del control de tabla
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdf'
+            ],
+            "ajax":
+            {
+                url: '../ajax/letrasCartera.php?op=listarView',
                 type: "get",
                 dataType: "json",
                 error: function (e) {

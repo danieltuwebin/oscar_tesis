@@ -171,6 +171,7 @@ function mostrar(idamortizacion) {
     $.post("../ajax/amortizacion.php?op=mostrar", { idamortizacion: idamortizacion }, function (data, status) {
         data = JSON.parse(data);
         mostrarform(true);
+        $("#btnGuardar").prop("disabled", true);
         $("#id_cliente").val(data.idcliente);
         $("#id_cliente").selectpicker('refresh');
         $("#documento").val(data.tipo_doc);

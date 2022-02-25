@@ -59,6 +59,38 @@ switch ($_GET["op"]) {
 
 		break;
 
+		case 'listarView':
+			$rspta = $letrasCartera->listar();
+			//declaramos un array
+			$data = array();
+			//https://wiki.php.net/rfc/ternary_associativity
+			while ($reg = $rspta->fetch_object()) {
+				$data[] = array(
+					"0" => '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>',
+					"1" => $reg->idletra,
+					"2" => $reg->nombre,
+					"3" => $reg->tipo_letra,
+					"4" => $reg->num_letra,
+					"5" => $reg->num_factura,
+					"6" => $reg->lugar_giro,
+					"7" => $reg->fecha_emi,
+					"8" => $reg->fecha_ven,
+					"9" => $reg->moneda,
+					"10" => $reg->total,
+					"11" => $reg->condicion == 1 ? '<span class="label bg-red">Pendiente</span>'
+						: '<span class="label bg-green">Pagado</span>'
+				);
+			}
+			$results = array(
+				"sEcho" => 1, //info para datatables
+				"iTotalRecords" => count($data), //enviamos el total de registros al datatable
+				"iTotalDisplayRecords" => count($data), //enviamos el total de registros a visualizar
+				"aaData" => $data
+			);
+			echo json_encode($results);
+	
+			break;		
+
 	case 'guardaryeditar':
 		if (empty($idletra)) {
 			$rspta = $letrasCartera->insertar(

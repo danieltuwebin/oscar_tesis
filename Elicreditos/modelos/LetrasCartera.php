@@ -11,6 +11,7 @@ class LetrasCartera
 
     public function listar()
     {
+        $id =  $_SESSION['idcliente'];
         $sql = "SELECT l.idletra
         , l.idcliente
         , p.nombre
@@ -26,6 +27,7 @@ class LetrasCartera
         , l.condicion
         , l.fechagrabacion 
         FROM letras_cartera l LEFT JOIN persona p ON l.idcliente = p.idpersona";
+        if($_SESSION['tipoUsuario']=="CLIENTE") $sql .= " WHERE l.idcliente = '$id' ";
         return ejecutarConsulta($sql);
     }
 

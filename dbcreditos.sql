@@ -520,3 +520,5 @@ ALTER TABLE `cheques` ADD `fechagrabacion` DATETIME NOT NULL AFTER `condicion`;
 ALTER TABLE `pago_cheque` ADD `fechagrabacion` DATETIME NOT NULL AFTER `total_pago`;
 
 ALTER TABLE `usuario` ADD `tipousuario` VARCHAR(30) NOT NULL AFTER `clave`;
+
+ALTER TABLE `usuario` ADD `idcliente` INT NOT NULL AFTER `tipousuario`;
