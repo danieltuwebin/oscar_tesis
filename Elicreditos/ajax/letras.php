@@ -34,6 +34,13 @@ switch ($_GET["op"]) {
 		//https://wiki.php.net/rfc/ternary_associativity
 		while ($reg = $rspta->fetch_object()) {
 			$data[] = array(
+				"0" => $reg->condicion == 4 ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
+					: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
+					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra . ',1,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
+					. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>',
+				// PARA EL CASO ANTERIOR
+				/*
 				"0" => $reg->condicion == 1 ? '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>'
 					. ' ' . '<button title="Pago Letra" class="btn btn-warning btn-xs" onclick="detalleLetra(' . $reg->idletra . ',1,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
 					. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
@@ -45,6 +52,7 @@ switch ($_GET["op"]) {
 							. ' ' . '<button title="Renovación" class="btn btn-success btn-xs" onclick="detalleLetra(' . $reg->idletra . ',2,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
 							. ' ' . '<button title="Protesto" class="btn btn-primary btn-xs" onclick="detalleLetra(' . $reg->idletra . ',3,' . $reg->total . ',' . $reg->idcliente . ')"><i class="fa fa-pencil"></i></button>'
 							: '<button class="btn btn-info btn-xs" onclick="mostrar(' . $reg->idletra . ')"><i class="fa fa-eye"></i></button>')),
+				*/
 				//"0" => $reg->idamortizacion,
 				"1" => $reg->idletra,
 				"2" => $reg->nombre,

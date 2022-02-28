@@ -47,6 +47,7 @@ class DetalleLetras
                             , '$montopagoDetalle'
                             , '$fechagrabacion'
                             )";
+                            //die($sql);
         return ejecutarConsulta($sql);
         //return $sql;
     }

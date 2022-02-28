@@ -14,9 +14,9 @@ function init() {
     tipovista = link.substring(link.length - 21, link.length);
     $("#tipovista").val(tipovista);
 
-    if(tipovista== 'letrasbcoConsulta.php'){
+    if (tipovista == 'letrasbcoConsulta.php') {
         listarView();
-    }else{
+    } else {
         listar();
     }
 
@@ -205,6 +205,7 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
     mostrarform_LetrasBco(true)
     $("#idLetraDetalle").val(idletra);
     if (tipoLetra == 1) {
+        ObtieneDeudaPendiente(idletra, tipoLetra);
         //$("#DivPeudaPendiente").hide();
         $("#DivPeudaPendiente").css("display", "none");
         $("#DivTotalPago").css("display", "block");
@@ -216,11 +217,11 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
         $("#montopagoDetalle").css("display", "block");
         $("#EiquetaPago").html('Total Pago');
         $("#montoidLetra").val(monto);
-        $("#montopagoDetalle").val(monto);
-        $("#montopagoDetalle").prop('disabled', true);
         $("#tipoLetraDetalle").val(tipoLetra);
         $("#nombreDetalle").val(idcliente);
-        $("#nombreDetalle").selectpicker('refresh');
+        $("#nombreDetalle").selectpicker('refresh');       
+        //$("#montopagoDetalle").val($("#deudaPendiente").val());
+        $("#montopagoDetalle").prop('disabled', true);
     } else if (tipoLetra == 2) {
         //$("#DivPeudaPendiente").show();
         $("#DivPeudaPendiente").css("display", "block");
@@ -237,7 +238,7 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
         $("#tipoLetraDetalle").val(tipoLetra);
         $("#nombreDetalle").val(idcliente);
         $("#nombreDetalle").selectpicker('refresh');
-        ObtieneDeudaPendiente(idletra);
+        ObtieneDeudaPendiente(idletra,tipoLetra);
     } else if (tipoLetra == 3) {
         //$("#DivPeudaPendiente").show();
         $("#DivPeudaPendiente").css("display", "block");
@@ -255,14 +256,20 @@ function detalleLetra(idletra, tipoLetra, monto, idcliente) {
     }
 }
 
-function ObtieneDeudaPendiente(id) {
+function ObtieneDeudaPendiente(id, tipoletra) {
     $.ajax({
         url: "../ajax/letras.php?op=obtieneDeudaPendiente",
         type: "POST",
         data: { "idletra": id },
+        async:"false",
         success: function (data) {
             data = JSON.parse(data);
-            $("#deudaPendiente").val(data.total);
+            if(tipoletra==1){
+                $("#montopagoDetalle").val(data.total);
+            }else{
+                $("#deudaPendiente").val(data.total);
+            }
+            
         }
     });
 }
@@ -305,14 +312,21 @@ function cancelarform_LetraPago() {
 
 //Función para guardar o editar
 function guardaryeditar_DetalleLetras(e) {
-
     e.preventDefault(); //No se activará la acción predeterminada del evento
 
     // PARA EL PAGO LETRA
     if ($("#tipoLetraDetalle").val() == '1') {
-        if (parseFloat($("#montoidLetra").val()) == parseFloat($("#montopagoDetalle").val()) && $("#tipoLetraDetalle").val() == '1') {
+        //if (parseFloat($("#montoidLetra").val()) == parseFloat($("#montopagoDetalle").val()) && $("#tipoLetraDetalle").val() == '1') {
+        if (parseFloat($("#montopagoDetalle").val()) > 0 && $("#tipoLetraDetalle").val() == '1') {
             $("#btnGuardarLetraPago").prop("disabled", true);
+
+            $("#montopagoDetalle").prop('disabled', false);
             var formData = new FormData($("#formularioDetalleLetras")[0]);
+            $("#montopagoDetalle").prop('disabled', true);
+
+            /*for (var value of formData.values()) {
+                console.log(value);
+            }*/
 
             // GRB DETALLE-LETRA
             $.ajax({

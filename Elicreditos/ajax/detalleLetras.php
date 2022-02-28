@@ -18,6 +18,9 @@ $fechavencimiento = isset($_POST["fechavencimiento"]) ? limpiarCadena($_POST["fe
 $fechaprotesto = isset($_POST["fechaprotesto"]) ? limpiarCadena($_POST["fechaprotesto"]) : "";
 $comisionprotesto = isset($_POST["comisionprotesto"]) ? limpiarCadena(strtoupper($_POST["comisionprotesto"])) : "";
 $montopagoDetalle = isset($_POST["montopagoDetalle"]) ? limpiarCadena($_POST["montopagoDetalle"]) : "";
+/*die(' ll '. $idLetraDetalle.' - '.$idLetra.' - '.$tipoLetraDetalle.' - '.$montoidLetra
+		.' - '.$nombreDetalle.' - '.$numeroPago.' - '.$fechapago.' - '.$fecharenovacion.' - '.$fechavencimiento.' - '.$fechaprotesto
+		.' - '.$comisionprotesto.' - '.$montopagoDetalle );*/
 
 // Para Fecha
 $date = date('Y-m-d H:i:s');
